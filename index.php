@@ -14,13 +14,20 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .hero-gradient {
-            background: linear-gradient(135deg, #1a5f7a 0%, #2d8bac 50%, #66b2cc 100%);
+        .hero-background {
+            background-image: url('./assets/images/secondary.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .card-hover {
             transition: all 0.3s ease;
-        }b 
+        }
 
         .card-hover:hover {
             transform: translateY(-5px);
@@ -81,18 +88,18 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Dynamic Background -->
-    <header class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-black/20"></div>
+    <!-- Hero Section with Professional Background -->
+    <header class="hero-background min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 hero-overlay"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-4xl mx-auto text-center text-white">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 floating">
                     Need a Final Year Project Fast?
                 </h1>
-                <p class="text-xl md:text-2xl mb-10 bg-white/10 backdrop-blur-lg rounded-2xl p-6 inline-block">
+                <p class="text-xl md:text-2xl mb-10 bg-black/30 backdrop-blur-lg rounded-2xl p-6 inline-block">
                     Worry no more! PROJECT 02 connects you with skilled creators and experts to deliver the perfect final year project.
                 </p>
-                <a href="signup.php" class="inline-block px-8 py-4 rounded-full bg-white text-blue-700 font-semibold hover:shadow-xl transition-all transform hover:scale-105">
+                <a href="signup.php" class="inline-block px-8 py-4 rounded-full bg-blue-600 text-white font-semibold hover:shadow-xl transition-all transform hover:scale-105 hover:bg-blue-700">
                     Get Started Today →
                 </a>
             </div>
@@ -100,7 +107,7 @@
     </header>
 
     <!-- Features Section with Modern Cards -->
-    <section class="py-20">
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-16 gradient-text">How It Works</h2>
             <div class="grid md:grid-cols-3 gap-8">
@@ -132,7 +139,7 @@
     </section>
 
     <!-- Modern Why Choose Us Section -->
-    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
