@@ -1,0 +1,5 @@
+{
+    "require": {
+        "flutterwavedev/flutterwave-v3": "^1.0"
+    }
+}

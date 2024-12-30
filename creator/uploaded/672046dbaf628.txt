@@ -1,0 +1,12 @@
+
+1. Input: Member details, loan request details (amount, interest rate, loan period)
+2. Validate member's eligibility for the loan based on cooperative rules.
+3. Calculate the loan repayment schedule using the following formula:
+   Monthly Payment = (Loan Amount * Interest Rate) / (1 - (1 + Interest Rate)^-Number of Payments)
+4. Check if the cooperative has sufficient funds to issue the loan.
+5. If eligible and funds are available:
+   a. Approve loan and update the member's loan records.
+   b. Schedule automatic repayment deductions from member's contributions.
+6. Track repayment progress and generate alerts for missed payments.
+7. Generate monthly reports summarizing loans issued, repayments, and outstanding balances.
+8. End.

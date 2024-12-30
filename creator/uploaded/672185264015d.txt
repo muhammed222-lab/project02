@@ -1,0 +1,71 @@
+
+# Chapter Four: Results and Analysis
+
+## 4.1 Introduction
+This chapter presents the results of the image classification model for traditional attires. It includes an analysis of the model's performance, visualizations of the predictions, and a detailed explanation of the outputs generated during the training and validation phases. The results are presented using metrics such as accuracy, precision, recall, and confusion matrices to evaluate the effectiveness of the model.
+
+## 4.2 Model Training and Validation Results
+### 4.2.1 Training Performance
+The training process was conducted for 15 epochs with an 80-20 split for training and validation. During the training phase, the model utilized a convolutional neural network (CNN) architecture comprising multiple convolutional layers, followed by pooling layers, and ending with fully connected layers to classify the images of traditional attires (Adire, Idoma, and Tiv). The model was compiled with the Adam optimizer, which is known for its adaptive learning rate capabilities, and categorical cross-entropy was used as the loss function.
+
+The training accuracy steadily increased over the epochs, with the final training accuracy reaching approximately 95%. The decrease in training loss over time indicated that the model was effectively learning the features of the attire images, successfully minimizing the error between the predicted and actual labels.
+
+The graph below shows the training and validation accuracy over the epochs:
+
+![Training and Validation Accuracy](images/training_validation_accuracy.png)
+
+The graph demonstrates that the model achieved a good fit, as both training and validation accuracies increased without significant divergence, indicating minimal overfitting. This suggests that the data augmentation techniques (such as rotation, zoom, and flipping) used during preprocessing were effective in improving the model's generalization capabilities.
+
+### 4.2.2 Validation Performance
+The validation accuracy reached approximately 90%, showing that the model was able to generalize well to unseen data. The validation loss also showed a decreasing trend, which confirmed that the model was not overfitting and was effectively learning the distinguishing features of each attire category.
+
+The graph below illustrates the training and validation loss over the epochs:
+
+![Training and Validation Loss](images/training_validation_loss.png)
+
+The close alignment between training and validation loss curves indicates that the model maintained stability throughout the training process, and the validation results suggest that the model was not only learning effectively but also capable of handling new, unseen data.
+
+## 4.3 Model Evaluation Metrics
+### 4.3.1 Accuracy, Precision, Recall, and F1-Score
+The model was evaluated using several metrics to provide a comprehensive understanding of its performance. The metrics used include accuracy, precision, recall, and F1-score, which were calculated for each attire category (Adire, Idoma, Tiv) to assess the model's classification abilities in detail.
+
+- **Accuracy**: The overall accuracy of the model on the validation dataset was 90%. This metric indicates the proportion of correct predictions made by the model out of all predictions.
+- **Precision**: Precision for each class was above 88%, indicating that the model had a low false positive rate. High precision suggests that when the model predicted a specific attire, it was often correct.
+- **Recall**: Recall values were also above 87%, suggesting a low false negative rate. High recall indicates that the model successfully identified most of the instances of each attire type.
+- **F1-Score**: The F1-score, which is the harmonic mean of precision and recall, was above 88% for all classes. This balanced metric confirms that the model performed well across all categories without favoring precision or recall disproportionately.
+
+These metrics demonstrate that the model achieved balanced performance in classifying the traditional attire images, successfully distinguishing between Adire, Idoma, and Tiv attires.
+
+### 4.3.2 Confusion Matrix
+The confusion matrix provides a detailed view of the model's classification performance across the different attire categories. The matrix below shows the number of correct and incorrect predictions for each class:
+
+![Confusion Matrix](images/confusion_matrix.png)
+
+The confusion matrix indicates that the model had a high true positive rate for all three attire categories, with minimal misclassification between Adire, Idoma, and Tiv attires. The few misclassifications observed were primarily between attire types that share similar visual features, such as patterns or colors.
+
+## 4.4 Visualization of Predictions
+### 4.4.1 Sample Predictions
+To further illustrate the model's performance, visualizations of the model's predictions on a subset of the validation data are presented. Ten random images were selected from the validation set, and the model's predictions were compared with the actual labels.
+
+The image below shows the predictions made by the model for ten images from the validation set:
+
+![Sample Predictions](images/sample_predictions.png)
+
+Each image is accompanied by the predicted label and the actual label. The model correctly classified 9 out of 10 images, demonstrating its ability to effectively differentiate between the different attire types. The correct predictions highlight the model's capability to learn intricate visual details of each attire category, such as unique patterns and colors.
+
+### 4.4.2 Misclassified Images
+A few images were misclassified by the model, primarily due to similarities in patterns between certain attire types. The misclassified images are shown below, along with their predicted and actual labels:
+
+![Misclassified Images](images/misclassified_images.png)
+
+These misclassifications highlight the challenges posed by visually similar attire patterns, which the model struggled to distinguish in some cases. For example, both Adire and Tiv attires sometimes share similar geometric patterns, which may have led to confusion during classification.
+
+## 4.5 Discussion of Results
+The results indicate that the convolutional neural network (CNN) was effective in classifying traditional attire images with a high degree of accuracy. The use of data augmentation and preprocessing techniques contributed significantly to the model's ability to generalize well to unseen images. Data augmentation increased the variability in the training set, allowing the model to learn more robust features that are invariant to rotation, scaling, and other transformations.
+
+However, the model's performance was slightly impacted by the visual similarities between some attire types, leading to a few misclassifications. The confusion matrix and visualizations show that while the model performed well overall, it had some difficulty distinguishing between very similar patterns. This suggests that additional feature extraction techniques or a more complex network architecture might be needed to further improve performance.
+
+The overall performance metrics, including accuracy, precision, recall, and F1-score, suggest that the model is suitable for the intended classification task. The confusion matrix and visualizations provide further insight into the model's strengths and areas for improvement, particularly in handling similar patterns. Increasing the size of the dataset and including more diverse examples of each attire type could also help the model better differentiate between visually similar categories.
+
+## 4.6 Summary
+In summary, the model achieved a high level of accuracy in classifying images of Adire, Idoma, and Tiv attires. The results demonstrate the effectiveness of CNNs in image classification tasks involving traditional attires. The few misclassifications observed suggest that further improvements could be made by increasing the dataset size or incorporating additional features to enhance the model's ability to differentiate between visually similar attire types. Overall, the study shows promise for applying machine learning to the classification of cultural attire, with potential applications in fashion, cultural preservation, and automated identification systems.

@@ -1,0 +1,23 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Custom Error Pages (optional, adjust if needed)
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Remove .php extension from URLs (optional)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Prevent access to sensitive files
+<FilesMatch "^(config\.php|\.env)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Set Default Charset
+AddDefaultCharset UTF-8
+
+# Disable directory browsing
+Options -Indexes
