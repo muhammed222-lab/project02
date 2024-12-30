@@ -25,14 +25,17 @@ if (!$buyer_email) {
     exit();
 }
 
-// Fetch projects the user interacted with
-$query = "SELECT p.title, p.description, p.price, c.delivery_date, c.created_at, c.status, p.creator_id, p.creator_email 
-          FROM clients c 
-          JOIN projects p ON c.project_title = p.title 
-          WHERE c.buyer_email = :buyer_email OR p.creator_email = :buyer_email"; // Check if the creator email matches
+// Fetch interested (not bought) projects
+$query = "SELECT p.*, pi.interest_date, u.name as creator_name, u.email as creator_email
+          FROM project_interests pi
+          JOIN projects p ON pi.project_id = p.id
+          JOIN users u ON p.creator_id = u.id
+          WHERE pi.user_id = :user_id AND pi.is_bought = 0
+          ORDER BY pi.interest_date DESC";
 
-$stmt = $pdo->prepare($query);
-$stmt->execute([':buyer_email' => $buyer_email]);
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -55,43 +58,58 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php if (empty($projects)): ?>
         <p class="text-gray-600">You have not interacted with any projects yet.</p>
         <?php else: ?>
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6" role="alert">
-            <p class="font-bold">Pending Warning:</p>
-            <p>Please check the delivery dates for your projects!</p>
-        </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($projects as $project): ?>
-            <div
-                class="bg-white rounded-lg border-2 border-solid border-gray-200 p-4 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                <h2 class="text-xl font-semibold text-green-700"><?php echo htmlspecialchars($project['title']); ?></h2>
-                <p class="text-gray-600"><?php echo htmlspecialchars($project['description']); ?></p>
-                <p class="font-bold text-green-600">Price: $<?php echo htmlspecialchars($project['price']); ?></p>
-                <p class="text-gray-500">Delivery Date:
-                    <?php echo htmlspecialchars($project['delivery_date'] ?? 'Not specified'); ?></p>
-                <p class="text-gray-500 text-sm">Interacted on: <?php echo htmlspecialchars($project['created_at']); ?>
-                </p>
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-2 bg-purple-50 rounded-full mr-3">
+                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-800"><?php echo htmlspecialchars($project['title']); ?></h2>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4"><?php echo htmlspecialchars($project['description']); ?></p>
+                    
+                    <div class="space-y-2">
+                        <p class="flex items-center text-gray-600">
+                            <span class="font-medium mr-2">Price:</span>
+                            <span class="text-green-600 font-semibold">$<?php echo number_format($project['price'], 2); ?></span>
+                        </p>
+                        <p class="flex items-center text-gray-600">
+                            <span class="font-medium mr-2">Creator:</span>
+                            <span><?php echo htmlspecialchars($project['creator_name']); ?></span>
+                        </p>
+                        <p class="flex items-center text-gray-500 text-sm">
+                            <span class="font-medium mr-2">Interested since:</span>
+                            <span><?php echo date('M j, Y', strtotime($project['interest_date'])); ?></span>
+                        </p>
+                    </div>
+                </div>
 
-                <!-- Display status message -->
-                <p class="font-semibold text-gray-700">
-                    Status:
-                    <?php
-                            echo htmlspecialchars(ucfirst($project['status']));
-                            ?>
-                </p>
-
-                <!-- Show "Connect with Creator" and "Pay" buttons if accepted -->
-                <?php if ($project['status'] === 'accepted'): ?>
-                <button class="connect-btn bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700"
-                    onclick="openMessagePopup('<?php echo htmlspecialchars($project['creator_id']); ?>', '<?php echo htmlspecialchars($project['creator_email']); ?>')">
-                    Connect with Creator
-                </button>
-                <button class="pay-btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-700"
-                    onclick="startPayment('<?php echo $project['price']; ?>', '<?php echo $project['title']; ?>')">
-                    Pay
-                </button>
-
-                <?php endif; ?>
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                    <div class="flex space-x-3">
+                        <button onclick="openMessagePopup('<?php echo htmlspecialchars($project['creator_id']); ?>', '<?php echo htmlspecialchars($project['creator_email']); ?>')"
+                                class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                            Contact Creator
+                        </button>
+                        <button onclick="startPayment('<?php echo $project['price']; ?>', '<?php echo htmlspecialchars($project['title']); ?>')"
+                                class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            Purchase
+                        </button>
+                    </div>
+                </div>
             </div>
             <?php endforeach; ?>
         </div>

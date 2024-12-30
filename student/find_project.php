@@ -145,33 +145,50 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <select name="programming" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
-                        <option value="">Programming Language</option>
-                        <option value="PHP" <?php if ($programmingFilter == 'PHP') echo 'selected'; ?>>PHP</option>
-                        <option value="JavaScript" <?php if ($programmingFilter == 'JavaScript') echo 'selected'; ?>>JavaScript</option>
-                        <option value="Python" <?php if ($programmingFilter == 'Python') echo 'selected'; ?>>Python</option>
+                    <select name="category" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all">
+                        <option value="">Project Category</option>
+                        <option value="Writing">Writing & Translation</option>
+                        <option value="Design">Design & Creative</option>
+                        <option value="Marketing">Marketing & Sales</option>
+                        <option value="Business">Business & Consulting</option>
+                        <option value="Programming">Programming & Tech</option>
+                        <option value="Education">Education & Training</option>
+                        <option value="Legal">Legal Services</option>
+                        <option value="Admin">Admin Support</option>
                     </select>
 
-                    <select name="technology" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
-                        <option value="">Technology</option>
-                        <option value="React" <?php if ($techFilter == 'React') echo 'selected'; ?>>React</option>
-                        <option value="Node.js" <?php if ($techFilter == 'Node.js') echo 'selected'; ?>>Node.js</option>
+                    <select name="budget" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all">
+                        <option value="">Budget Range</option>
+                        <option value="50">Under $50</option>
+                        <option value="100">Under $100</option>
+                        <option value="250">Under $250</option>
+                        <option value="500">Under $500</option>
+                        <option value="1000">Under $1,000</option>
+                        <option value="5000">Under $5,000</option>
                     </select>
 
-                    <select name="topic" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
-                        <option value="">Topic</option>
-                        <option value="Web Development" <?php if ($topicFilter == 'Web Development') echo 'selected'; ?>>Web Development</option>
-                        <option value="Machine Learning" <?php if ($topicFilter == 'Machine Learning') echo 'selected'; ?>>Machine Learning</option>
+                    <select name="duration" class="custom-select w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all">
+                        <option value="">Project Duration</option>
+                        <option value="1">Less than 1 week</option>
+                        <option value="2">1-2 weeks</option>
+                        <option value="4">2-4 weeks</option>
+                        <option value="8">1-2 months</option>
+                        <option value="12">2-3 months</option>
+                        <option value="24">3+ months</option>
                     </select>
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                        Search Projects
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium">
+                        Find Projects
                     </button>
-        
-                    <a href="create_project.php" class="text-green-600 hover:text-green-700 font-medium">
-                        Create Custom Project →
+                    
+                    <a href="create_project.php" 
+                       class="w-full md:w-auto inline-flex items-center justify-center px-8 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Create Your Project
                     </a>
                 </div>
             </form>
@@ -181,26 +198,65 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php if (!empty($projects)): ?>
                 <?php foreach ($projects as $row): ?>
-                    <div class="project-card bg-white p-6 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start mb-4">
-                            <h2 class="text-xl font-bold text-gray-800"><?php echo htmlspecialchars($row['title']); ?></h2>
-                            <span class="text-green-600 font-semibold">$<?php echo htmlspecialchars($row['price']); ?></span>
+                    <div class="project-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center mb-4">
+                            <div class="p-2 bg-indigo-50 rounded-full mr-3">
+                                <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-800 flex-1"><?php echo htmlspecialchars($row['title']); ?></h2>
                         </div>
-                        <p class="text-gray-600 mb-4 line-clamp-3"><?php echo htmlspecialchars($row['description']); ?></p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500"><?php echo htmlspecialchars($row['created_date']); ?></span>
+
+                        <div class="mb-4">
+                            <p class="text-gray-600 line-clamp-3"><?php echo htmlspecialchars($row['description']); ?></p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">Budget</span>
+                                <span class="font-semibold text-indigo-600">$<?php echo htmlspecialchars($row['price']); ?></span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">Posted</span>
+                                <span class="text-gray-700"><?php echo date('M j, Y', strtotime($row['created_date'])); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex space-x-3">
                             <button onclick='openModal(<?php echo json_encode($row['title']); ?>, 
                                 <?php echo json_encode($row['creator_id']); ?>, 
                                 <?php echo json_encode($row['creator_email']); ?>);'
-                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                                Buy Project
+                                class="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Purchase Project
                             </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="col-span-full text-center py-12">
-                    <p class="text-gray-500 text-lg">No projects found matching your criteria.</p>
+                    <div class="bg-white rounded-xl shadow-sm p-8 max-w-lg mx-auto">
+                        <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">No Projects Found</h3>
+                        <p class="text-gray-500 mb-6">Try adjusting your search filters or create your own project!</p>
+                        <a href="create_project.php" 
+                           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
+                            Create a Project
+                            <svg class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>

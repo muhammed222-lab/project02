@@ -20,7 +20,7 @@
 
         .card-hover {
             transition: all 0.3s ease;
-        }
+        }b 
 
         .card-hover:hover {
             transform: translateY(-5px);
@@ -63,7 +63,7 @@
         }
     </style>
 </head>
-r
+
 <body class="bg-gray-50">
     <!-- Modern Navbar with Blur Effect -->
     <nav class="fixed w-full z-50 nav-blur border-b border-gray-200/30">
