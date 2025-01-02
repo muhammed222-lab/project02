@@ -11,6 +11,13 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $creator_id = $_GET['creator_id'] ?? null;
 
+// Fetch user details
+$query = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 // Fetch creator details
 $query = "SELECT * FROM users WHERE id = :creator_id";
 $stmt = $conn->prepare($query);
@@ -35,58 +42,97 @@ $stmt->bindParam(':creator_id', $creator_id, PDO::PARAM_INT);
 $stmt->execute();
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with <?php echo htmlspecialchars($creator['email']); ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../favicon.png" type="image/x-icon">
+    <title>Chat with <?php echo htmlspecialchars($creator['name']); ?> | Project Hub</title>
+    <link rel="icon" href="../favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .message-container {
+            max-height: 70vh;
+            overflow-y-auto;
+            scroll-behavior: smooth;
+        }
+        .message-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .message-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 300ms ease-in-out;
+        }
+        .typing-indicator {
+            animation: typing 1.4s infinite;
+        }
+        @keyframes typing {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
 </head>
-
-<body class="bg-gray-100">
+<body class="antialiased">
     <?php include 'nav.php'; ?>
 
-    <div class="container mx-auto mt-8 px-4">
-        <div class="max-w-4xl mx-auto">
+    <main class="container mx-auto px-4 py-16 max-w-4xl">
+        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
             <!-- Chat Header -->
-            <div class="bg-white shadow-lg rounded-t-xl border border-gray-100 p-4">
-                <div class="flex items-center">
-                    <a href="messages.php" class="mr-4">
-                        <svg class="w-6 h-6 text-gray-500 hover:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="messages.php" class="hover:bg-white/20 p-2 rounded-full transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </a>
-                    <div class="flex-shrink-0">
-                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-gray-600 font-medium text-lg">
-                                <?php echo strtoupper(substr($creator['email'], 0, 1)); ?>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">
+                                <?php echo strtoupper(substr($creator['name'], 0, 1)); ?>
                             </span>
                         </div>
+                        <div>
+                            <h2 class="text-xl font-bold"><?php echo htmlspecialchars($creator['name']); ?></h2>
+                            <p id="typing-indicator" class="text-sm text-blue-100 hidden">
+                                <span class="typing-indicator">typing...</span>
+                            </p>
+                        </div>
                     </div>
-                    <div class="ml-4">
-                        <h2 class="text-lg font-semibold text-gray-900"><?php echo htmlspecialchars($creator['email']); ?></h2>
-                        <p class="text-sm text-gray-500" id="typing-indicator" style="display: none;">typing...</p>
-                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="hover:bg-white/20 p-2 rounded-full transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="hover:bg-white/20 p-2 rounded-full transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
             <!-- Chat Messages -->
-            <div class="bg-gray-50 border-l border-r border-gray-100 h-[500px] overflow-y-auto p-4" id="chat-messages">
+            <div id="chat-messages" class="message-container bg-gray-50 p-6 space-y-4 h-[500px] overflow-y-auto">
                 <?php if (empty($messages)): ?>
-                    <div class="flex items-center justify-center h-full">
-                        <div class="text-center">
-                            <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    <div class="flex items-center justify-center h-full text-center">
+                        <div>
+                            <div class="bg-white rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">No Messages Yet</h3>
-                            <p class="text-gray-500">Start the conversation by sending a message below.</p>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">No Messages Yet</h3>
+                            <p class="text-gray-600">Start the conversation by sending a message below.</p>
                         </div>
                     </div>
                 <?php else: ?>
@@ -110,23 +156,25 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             }
                     ?>
                         <div class="flex justify-center mb-4">
-                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">
                                 <?php echo $displayDate; ?>
                             </span>
                         </div>
                     <?php endif; ?>
 
-                    <div class="mb-4 <?php echo $message['sender_id'] == $user_id ? 'flex justify-end' : 'flex justify-start'; ?>">
-                        <div class="<?php echo $message['sender_id'] == $user_id ? 'bg-blue-600 text-white' : 'bg-white text-gray-900'; ?> rounded-lg px-4 py-2 max-w-[70%] shadow-sm">
+                    <div class="message-enter <?php echo $message['sender_id'] == $user_id ? 'flex justify-end' : 'flex justify-start'; ?>">
+                        <div class="<?php echo $message['sender_id'] == $user_id ? 'bg-blue-600 text-white' : 'bg-white text-gray-900 border border-gray-200'; ?> rounded-xl px-4 py-3 max-w-[70%] shadow-sm">
                             <p class="text-sm"><?php echo htmlspecialchars($message['content']); ?></p>
-                            <p class="text-xs <?php echo $message['sender_id'] == $user_id ? 'text-blue-100' : 'text-gray-500'; ?> mt-1">
-                                <?php echo $messageDate->format('H:i'); ?>
+                            <div class="flex items-center justify-between mt-2">
+                                <p class="text-xs <?php echo $message['sender_id'] == $user_id ? 'text-blue-100' : 'text-gray-500'; ?>">
+                                    <?php echo $messageDate->format('H:i'); ?>
+                                </p>
                                 <?php if ($message['sender_id'] == $user_id): ?>
-                                    <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
                                 <?php endif; ?>
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -134,27 +182,80 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Message Input -->
-            <div class="bg-white shadow-lg rounded-b-xl border border-t-0 border-gray-100 p-4">
-                <form action="send_message.php" method="POST" id="message-form" class="flex items-end space-x-4">
+            <div class="bg-white p-6 border-t border-gray-100">
+                <form id="message-form" action="send_message.php" method="POST" class="flex space-x-4">
                     <input type="hidden" name="receiver_id" value="<?php echo $creator_id; ?>">
                     <div class="flex-1">
-                        <textarea name="message_content" 
-                                placeholder="Type your message..." 
-                                required
-                                class="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                                rows="3"></textarea>
+                        <textarea 
+                            name="message_content" 
+                            id="message-input"
+                            placeholder="Type your message..." 
+                            required
+                            rows="3"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        ></textarea>
                     </div>
-                    <button type="submit" 
-                            class="bg-blue-600 text-white rounded-lg px-6 py-3 font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                    <button 
+                        type="submit" 
+                        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg px-6 py-3 hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 flex items-center"
+                    >
                         <span>Send</span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                         </svg>
                     </button>
                 </form>
             </div>
         </div>
-    </div>
-</body>
+    </main>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        // Scroll to bottom on page load
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Typing indicator
+        messageInput.addEventListener('input', function() {
+            if (this.value.trim().length > 0) {
+                typingIndicator.classList.remove('hidden');
+            } else {
+                typingIndicator.classList.add('hidden');
+            }
+        });
+
+        // Form submission
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('send_message.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear input and hide typing indicator
+                    messageInput.value = '';
+                    typingIndicator.classList.add('hidden');
+
+                    // Optionally, you could append the new message to the chat
+                    // This would require a more complex implementation with WebSockets
+                } else {
+                    alert('Error sending message: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while sending the message');
+            });
+        });
+    });
+    </script>
+</body>
 </html>
