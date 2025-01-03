@@ -86,7 +86,7 @@
                     </a>
                 </div>
             </div>
-```html
+
 <!-- Student Navigation Bar -->
 <!-- Main navigation container with dark theme and blur effect -->
 <nav class="        </div>
