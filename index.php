@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-icons@0.321.0/dist/lucide.min.css">
     
     <style>
+        /* Global Styles */
         * {
             font-family: 'Inter', sans-serif;
         }
@@ -46,7 +47,7 @@
 </head>
 
 <body>
-    <!-- Modern Navbar with Emerald Theme -->
+    <!-- Navbar Section -->
     <nav class="fixed w-full z-50 nav-blur border-b border-green-100">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
@@ -66,7 +67,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Background Image -->
+    <!-- Hero Section -->
     <header class="hero-background min-h-screen flex items-center relative">
         <div class="absolute inset-0 hero-overlay"></div>
         <div class="container mx-auto px-6 relative z-10">
@@ -161,7 +162,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer Section -->
     <?php include 'includes/footer.php'; ?>
 
     <!-- Cookie Consent -->
