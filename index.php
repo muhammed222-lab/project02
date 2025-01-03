@@ -106,7 +106,7 @@
                 
                 <div class="feature-card bg-white rounded-2xl p-8 shadow-md border border-green-50">
                     <div class="mb-6 text-center">
-                        <img src="./assets/images/done2.png" alt="Connect" class="w-32 h-32 mx-auto object-contain">
+                        <img src="./assets/images/connect.png" alt="Connect" class="w-32 h-32 mx-auto object-contain">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-emerald-800 text-center">Connect with Experts</h3>
                     <p class="text-gray-600 text-center">
@@ -154,7 +154,7 @@
                 </div>
                 <div class="md:w-1/2">
                     <div class="rounded-2xl overflow-hidden shadow-lg">
-                        <img src="./assets/images/hero2.avif" alt="Platform Features" class="w-full object-cover">
+                        <img src="./assets/images/hero2.jpg" alt="Platform Features" class="w-full object-cover">
                     </div>
                 </div>
             </div>
