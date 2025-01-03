@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once './db.php';
+require_once '../db.php'; // Adjusted the path to include the correct file
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -18,7 +18,7 @@ $query = "SELECT p.*, pi.interest_date, u.name as creator_name, u.email as creat
           WHERE pi.user_id = :user_id AND pi.is_bought = 1
           ORDER BY pi.interest_date DESC";
 
-$stmt = $conn->prepare($query);
+$stmt = $pdo->prepare($query); // Changed $conn to $pdo
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -36,6 +36,7 @@ function calculateProjectProgress($deadline) {
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,63 +46,83 @@ function calculateProjectProgress($deadline) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="../assets/css/student.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
-            min-height: 100vh;
-            color: #EEEEEE;
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #222831 0%, #393E46 100%);
+        min-height: 100vh;
+        color: #EEEEEE;
+    }
+
+    /* Project card styling with subtle hover effect */
+    .project-card {
+        transition: all 0.3s ease-in-out;
+        transform: translateY(0);
+        background-color: #393E46;
+        border: 1px solid #00ADB5/20;
+    }
+
+    .project-card:hover {
+        transform: translateY(-3px);
+        background-color: #393E46/95;
+    }
+
+    .progress-bar {
+        transition: width 0.5s ease-in-out;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
         }
-        /* Project card styling with subtle hover effect */
+
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    @media (max-width: 768px) {
         .project-card {
-            transition: all 0.3s ease-in-out;
-            transform: translateY(0);
-            background-color: #393E46;
-            border: 1px solid #00ADB5/20;
+            margin-bottom: 1.5rem;
         }
-        .project-card:hover {
-            transform: translateY(-3px);
-            background-color: #393E46/95;
-        }
-        .progress-bar {
-            transition: width 0.5s ease-in-out;
-        }
-        .animate-pulse-slow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        @media (max-width: 768px) {
-            .project-card {
-                margin-bottom: 1.5rem;
-            }
-        }
+    }
     </style>
 </head>
+
 <body class="antialiased bg-[#222831] text-[#EEEEEE]">
     <?php include 'nav.php'; ?>
 
     <main class="container mx-auto px-4 py-16 max-w-7xl">
         <header class="mb-12 text-center">
             <h1 class="text-5xl font-bold text-[#EEEEEE] mb-4">Your Purchased Projects</h1>
-            <p class="text-xl text-[#EEEEEE]/80 max-w-2xl mx-auto">Explore and manage the projects you've invested in. Track progress, communicate with creators, and download your resources.</p>
+            <p class="text-xl text-[#EEEEEE]/80 max-w-2xl mx-auto">Explore and manage the projects you've invested in.
+                Track progress, communicate with creators, and download your resources.</p>
         </header>
 
         <?php if (empty($projects)): ?>
         <div class="bg-[#393E46] rounded-2xl p-16 text-center">
             <div class="max-w-md mx-auto">
                 <div class="bg-[#00ADB5]/10 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[#00ADB5]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-[#EEEEEE] mb-4">No Purchased Projects Yet</h3>
-                <p class="text-[#EEEEEE]/80 mb-8">Start exploring and purchase your first project. Discover opportunities that match your skills and interests.</p>
-                <a href="find_project.php" 
-                   class="inline-flex items-center px-6 py-3 bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] rounded-lg transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <p class="text-[#EEEEEE]/80 mb-8">Start exploring and purchase your first project. Discover
+                    opportunities that match your skills and interests.</p>
+                <a href="find_project.php"
+                    class="inline-flex items-center px-6 py-3 bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] rounded-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     Browse Available Projects
                 </a>
@@ -120,7 +141,8 @@ function calculateProjectProgress($deadline) {
                         <h2 class="text-xl font-bold text-[#EEEEEE] flex-1 mr-4">
                             <?php echo htmlspecialchars($project['title']); ?>
                         </h2>
-                        <span class="status-badge px-3 py-1 rounded-full text-xs font-medium bg-<?php echo $status_color; ?>-100 text-<?php echo $status_color; ?>-800">
+                        <span
+                            class="status-badge px-3 py-1 rounded-full text-xs font-medium bg-<?php echo $status_color; ?>-100 text-<?php echo $status_color; ?>-800">
                             <?php echo $status; ?>
                         </span>
                     </div>
@@ -134,44 +156,53 @@ function calculateProjectProgress($deadline) {
                             <span>Project Progress</span>
                             <span><?php echo $progress; ?>%</span>
                         </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3 mb-4">
-                        <div class="flex items-center text-[#EEEEEE]/80">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <span>Creator: <?php echo htmlspecialchars($project['creator_name']); ?></span>
-                        </div>
-                        <div class="flex items-center text-[#EEEEEE]/80">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>Purchased: <?php echo date('M j, Y', strtotime($project['interest_date'])); ?></span>
-                        </div>
-                    </div>
-
-                    <div class="flex space-x-3">
-                        <a href="<?php echo htmlspecialchars($project['project_file']); ?>" 
-                           class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-[#00ADB5] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
-                           download>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            Download Project
-                        </a>
-                        <button onclick="openMessagePopup('<?php echo htmlspecialchars($project['creator_id']); ?>', '<?php echo htmlspecialchars($project['creator_email']); ?>')"
-                                class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-[#393E46] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5] transition-colors border border-[#00ADB5]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                            Contact Creator
-                        </button>
                     </div>
                 </div>
+
+                <div class="space-y-3 mb-4">
+                    <div class="flex items-center text-[#EEEEEE]/80">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>Creator: <?php echo htmlspecialchars($project['creator_name']); ?></span>
+                    </div>
+                    <div class="flex items-center text-[#EEEEEE]/80">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>Purchased: <?php echo date('M j, Y', strtotime($project['interest_date'])); ?></span>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <a href="<?php echo htmlspecialchars($project['project_file']); ?>"
+                        class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-[#00ADB5] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
+                        download>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download Project
+                    </a>
+                    <button
+                        onclick="openMessagePopup('<?php echo htmlspecialchars($project['creator_id']); ?>', '<?php echo htmlspecialchars($project['creator_email']); ?>')"
+                        class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-[#393E46] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5] transition-colors border border-[#00ADB5]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Contact Creator
+                    </button>
+                </div>
             </div>
-            <?php endforeach; ?>
+        </div>
+        <?php endforeach; ?>
         </div>
         <?php endif; ?>
     </main>
@@ -183,8 +214,10 @@ function calculateProjectProgress($deadline) {
                 <div class="flex items-center justify-between">
                     <h3 class="text-xl font-bold">Send Message</h3>
                     <button onclick="closeMessageModal()" class="hover:bg-white/20 rounded-full p-2 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -193,22 +226,18 @@ function calculateProjectProgress($deadline) {
                 <input type="hidden" id="receiver_id" name="receiver_id">
                 <input type="hidden" id="receiver_email" name="receiver_email">
                 <div>
-                    <label for="message_content" class="block text-sm font-medium text-gray-700 mb-2">Your Message</label>
-                        <textarea 
-                        id="message_content" 
-                        name="message_content" 
-                        rows="4"
+                    <label for="message_content" class="block text-sm font-medium text-gray-700 mb-2">Your
+                        Message</label>
+                    <textarea id="message_content" name="message_content" rows="4"
                         class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent resize-none bg-[#393E46] text-[#EEEEEE]"
-                        placeholder="Write your message to the project creator..." 
-                        required
-                    ></textarea>
+                        placeholder="Write your message to the project creator..." required></textarea>
                 </div>
                 <div class="flex space-x-3">
-                        <button type="button" onclick="closeMessageModal()" 
+                    <button type="button" onclick="closeMessageModal()"
                         class="flex-1 px-4 py-3 bg-[#393E46] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5] transition-colors border border-[#00ADB5]">
                         Cancel
                     </button>
-                    <button type="submit" 
+                    <button type="submit"
                         class="flex-1 px-4 py-3 bg-[#00ADB5] text-[#EEEEEE] rounded-lg hover:bg-[#00ADB5]/90 transition-colors">
                         Send Message
                     </button>
@@ -229,4 +258,5 @@ function calculateProjectProgress($deadline) {
     }
     </script>
 </body>
+
 </html>
