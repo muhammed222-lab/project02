@@ -51,11 +51,13 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="icon" href="../favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="../assets/css/student.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
             min-height: 100vh;
+            color: #EEEEEE;
         }
         .message-container {
             max-height: 70vh;
@@ -80,13 +82,14 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased bg-[#222831] text-[#EEEEEE]">
     <?php include 'nav.php'; ?>
 
     <main class="container mx-auto px-4 py-16 max-w-4xl">
-        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
+            <!-- Chat container with blur background -->
+            <div class="bg-[#393E46]/95 backdrop-blur-md rounded-2xl overflow-hidden border border-[#00ADB5]/20">
             <!-- Chat Header -->
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white flex items-center justify-between">
+            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE] flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <a href="messages.php" class="hover:bg-white/20 p-2 rounded-full transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,7 +104,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div>
                             <h2 class="text-xl font-bold"><?php echo htmlspecialchars($creator['name']); ?></h2>
-                            <p id="typing-indicator" class="text-sm text-blue-100 hidden">
+                            <p id="typing-indicator" class="text-sm text-[#00ADB5] hidden">
                                 <span class="typing-indicator">typing...</span>
                             </p>
                         </div>
@@ -122,17 +125,17 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Chat Messages -->
-            <div id="chat-messages" class="message-container bg-gray-50 p-6 space-y-4 h-[500px] overflow-y-auto">
+            <div id="chat-messages" class="message-container bg-[#393E46] p-6 space-y-4 h-[500px] overflow-y-auto">
                 <?php if (empty($messages)): ?>
                     <div class="flex items-center justify-center h-full text-center">
                         <div>
-                            <div class="bg-white rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="bg-[#00ADB5]/10 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4">No Messages Yet</h3>
-                            <p class="text-gray-600">Start the conversation by sending a message below.</p>
+                            <h3 class="text-2xl font-bold text-[#EEEEEE] mb-4">No Messages Yet</h3>
+                            <p class="text-[#EEEEEE]/80">Start the conversation by sending a message below.</p>
                         </div>
                     </div>
                 <?php else: ?>
@@ -156,21 +159,21 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             }
                     ?>
                         <div class="flex justify-center mb-4">
-                            <span class="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">
+                            <span class="bg-[#00ADB5]/10 text-[#EEEEEE] text-xs px-3 py-1 rounded-full">
                                 <?php echo $displayDate; ?>
                             </span>
                         </div>
                     <?php endif; ?>
 
                     <div class="message-enter <?php echo $message['sender_id'] == $user_id ? 'flex justify-end' : 'flex justify-start'; ?>">
-                        <div class="<?php echo $message['sender_id'] == $user_id ? 'bg-blue-600 text-white' : 'bg-white text-gray-900 border border-gray-200'; ?> rounded-xl px-4 py-3 max-w-[70%] shadow-sm">
+                        <div class="<?php echo $message['sender_id'] == $user_id ? 'bg-[#00ADB5] text-[#EEEEEE]' : 'bg-[#393E46] text-[#EEEEEE] border border-[#00ADB5]/50'; ?> rounded-xl px-4 py-3 max-w-[70%] shadow-sm">
                             <p class="text-sm"><?php echo htmlspecialchars($message['content']); ?></p>
                             <div class="flex items-center justify-between mt-2">
-                                <p class="text-xs <?php echo $message['sender_id'] == $user_id ? 'text-blue-100' : 'text-gray-500'; ?>">
+                                <p class="text-xs <?php echo $message['sender_id'] == $user_id ? 'text-[#00ADB5]/80' : 'text-[#EEEEEE]/80'; ?>">
                                     <?php echo $messageDate->format('H:i'); ?>
                                 </p>
                                 <?php if ($message['sender_id'] == $user_id): ?>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#00ADB5]/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
                                 <?php endif; ?>
@@ -182,7 +185,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Message Input -->
-            <div class="bg-white p-6 border-t border-gray-100">
+            <div class="bg-[#393E46] p-6 border-t border-[#00ADB5]/20">
                 <form id="message-form" action="send_message.php" method="POST" class="flex space-x-4">
                     <input type="hidden" name="receiver_id" value="<?php echo $creator_id; ?>">
                     <div class="flex-1">
@@ -192,12 +195,12 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             placeholder="Type your message..." 
                             required
                             rows="3"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent resize-none bg-[#393E46] text-[#EEEEEE]"
                         ></textarea>
                     </div>
                     <button 
                         type="submit" 
-                        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg px-6 py-3 hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 flex items-center"
+                        class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] text-[#EEEEEE] rounded-lg px-6 py-3 hover:from-[#00ADB5]/90 hover:to-[#393E46]/90 transition-all transform hover:scale-105 flex items-center"
                     >
                         <span>Send</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

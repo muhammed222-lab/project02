@@ -113,19 +113,100 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
             min-height: 100vh;
+            color: #EEEEEE;
         }
+
+        /* ======================
+           Password Strength Indicator
+           ====================== */
         .password-strength {
             height: 4px;
             transition: width 0.3s ease-in-out;
         }
-        .animate-pulse-slow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+        /* ======================
+           Input Group Styling
+           ====================== */
+        .input-group {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #393E46;
+            border: 1px solid rgba(0, 173, 181, 0.2);
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+        .input-group::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 173, 181, 0.1) 10%, transparent 10.01%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .input-group:hover {
+            transform: translateY(-5px);
+            background-color: rgba(57, 62, 70, 0.95);
+        }
+
+        .input-group:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ======================
+           Loading Animation
+           ====================== */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #00ADB5;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ======================
+           Fade-in Animation
+           ====================== */
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out both;
+        }
+
+        /* ======================
+           Mobile Responsiveness
+           ====================== */
+        @media (max-width: 768px) {
+            .input-group {
+                padding: 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -146,14 +227,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
         <?php endif; ?>
 
         <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE]">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Profile Settings</h1>
                         <p class="text-blue-100">Manage and update your personal information</p>
                     </div>
-                    <div class="bg-white/20 p-3 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-[#00ADB5]/20 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#EEEEEE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         </svg>
                     </div>
@@ -164,50 +245,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                 <!-- Profile Information -->
                 <section>
                     <div class="flex items-center mb-6">
-                        <div class="bg-blue-50 p-3 rounded-full mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800">Profile Information</h2>
+                        <h2 class="text-2xl font-bold text-[#EEEEEE]">Profile Information</h2>
                     </div>
                     <form id="profileForm" action="" method="POST" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                            <input 
-                                type="text" 
-                                name="name" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Full Name</label>
+                            <input
+                                type="text"
+                                name="name"
                                 value="<?php echo htmlspecialchars($user['name']); ?>"
                                 required
                                 minlength="3"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Enter your full name"
                             >
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Department</label>
-                            <input 
-                                type="text" 
-                                name="department" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Department</label>
+                            <input
+                                type="text"
+                                name="department"
                                 value="<?php echo htmlspecialchars($user['department']); ?>"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Your academic department"
                             >
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Matric Number</label>
-                            <input 
-                                type="text" 
-                                name="matric_number" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Matric Number</label>
+                            <input
+                                type="text"
+                                name="matric_number"
                                 value="<?php echo htmlspecialchars($user['matric_number']); ?>"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Your student identification number"
                             >
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             name="update_profile"
-                            class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
                         >
                             Update Profile
                         </button>
@@ -217,37 +298,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                 <!-- Email Settings -->
                 <section>
                     <div class="flex items-center mb-6">
-                        <div class="bg-purple-50 p-3 rounded-full mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800">Email Settings</h2>
+                        <h2 class="text-2xl font-bold text-[#EEEEEE]">Email Settings</h2>
                     </div>
                     <form id="emailForm" action="" method="POST" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Email</label>
-                            <input 
-                                type="email" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Current Email</label>
+                            <input
+                                type="email"
                                 value="<?php echo htmlspecialchars($user['email']); ?>"
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg" 
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg text-[#EEEEEE]" 
                                 disabled
                             >
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">New Email</label>
-                            <input 
-                                type="email" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">New Email</label>
+                            <input
+                                type="email"
                                 name="new_email"
                                 required
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Enter new email address"
                             >
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             name="update_email"
-                            class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors"
+                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
                         >
                             Update Email
                         </button>
@@ -257,55 +338,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                 <!-- Password Settings -->
                 <section>
                     <div class="flex items-center mb-6">
-                        <div class="bg-green-50 p-3 rounded-full mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800">Password Settings</h2>
+                        <h2 class="text-2xl font-bold text-[#EEEEEE]">Password Settings</h2>
                     </div>
                     <form id="passwordForm" action="" method="POST" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
-                            <input 
-                                type="password" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Current Password</label>
+                            <input
+                                type="password"
                                 name="current_password"
                                 required
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Enter current password"
                             >
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                            <input 
-                                type="password" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">New Password</label>
+                            <input
+                                type="password"
                                 name="new_password"
                                 id="new_password"
                                 required
                                 minlength="8"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Enter new password"
                             >
-                            <div class="mt-2 h-1 w-full bg-gray-200 rounded-full">
-                                <div id="password-strength" class="password-strength bg-red-500 rounded-full" style="width: 0;"></div>
+                            <div class="mt-2 h-1 w-full bg-[#393E46] rounded-full">
+                                <div id="password-strength" class="password-strength bg-[#00ADB5] rounded-full" style="width: 0;"></div>
                             </div>
-                            <p id="password-strength-text" class="mt-2 text-sm text-gray-500">Password strength: Weak</p>
+                            <p id="password-strength-text" class="mt-2 text-sm text-[#EEEEEE]/80">Password strength: Weak</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
-                            <input 
-                                type="password" 
+                            <label class="block text-sm font-medium text-[#EEEEEE]/80 mb-2">Confirm New Password</label>
+                            <input
+                                type="password"
                                 name="confirm_password"
                                 required
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all text-[#EEEEEE]"
                                 placeholder="Confirm new password"
                             >
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             name="update_password"
-                            class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
-                        >
                             Update Password
                         </button>
                     </form>

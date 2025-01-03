@@ -23,11 +23,13 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <link rel="icon" href="../favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="../assets/css/student.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
             min-height: 100vh;
+            color: #EEEEEE;
         }
         .step-indicator {
             transition: all 0.3s ease-in-out;
@@ -58,16 +60,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased bg-[#222831] text-[#EEEEEE]">
     <?php include 'nav.php'; ?>
 
-    <main class="container mx-auto px-4 py-16 max-w-4xl">
-        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+    <main class="container mx-auto px-5 pt-32 md:pt-36 pb-20 max-w-4xl">
+        <!-- Main form container with blur background -->
+        <div class="bg-[#393E46]/95 backdrop-blur-md rounded-2xl overflow-hidden border border-[#00ADB5]/20">
+            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-8 text-[#EEEEEE]">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Create Your Project</h1>
-                        <p class="text-blue-100">Design your project with precision and clarity</p>
+                    <p class="text-[#FFFFFFFF]">Design your project with precision and clarity</p>
                     </div>
                     <div class="bg-white/20 p-3 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -78,30 +81,32 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Step Indicators -->
-            <div class="flex bg-gray-50 p-4">
+            <!-- Step indicators container -->
+            <div class="flex bg-[#393E46]/95 backdrop-blur-sm p-6 border-b border-[#00ADB5]/20">
                 <div class="flex-1 text-center">
-                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-gray-600 active" data-step="1">
+                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-[#EEEEEE] active" data-step="1">
                         Project Basics
                     </div>
                 </div>
                 <div class="flex-1 text-center">
-                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-gray-600" data-step="2">
+                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-[#EEEEEE]" data-step="2">
                         Project Details
                     </div>
                 </div>
                 <div class="flex-1 text-center">
-                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-gray-600" data-step="3">
+                    <div class="step-indicator px-4 py-2 rounded-lg text-sm font-medium text-[#EEEEEE]" data-step="3">
                         Review & Submit
                     </div>
                 </div>
             </div>
 
-            <form id="projectForm" action="submit_project.php" method="POST" enctype="multipart/form-data" class="p-8">
+            <form id="projectForm" action="submit_project.php" method="POST" enctype="multipart/form-data" class="p-8 space-y-8">
                 <!-- Step 1: Project Basics -->
                 <div class="form-step active" data-step="1">
-                    <div class="space-y-6">
+                    <div class="space-y-10">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Title</label>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Title</label>
+                            <!-- Project title input -->
                             <input 
                                 type="text" 
                                 name="project_title" 
@@ -109,16 +114,16 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                                 minlength="5" 
                                 maxlength="100"
                                 placeholder="Enter a clear, descriptive project title"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46]/95 backdrop-blur-sm text-[#EEEEEE]"
                             >
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Category</label>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Category</label>
                             <select 
                                 name="category" 
                                 required
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
                             >
                                 <option value="">Select Project Category</option>
                                 <option value="Writing">Writing & Translation</option>
@@ -131,7 +136,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                         <div class="flex justify-end">
                             <button type="button" onclick="nextStep(2)" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                                class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
                                 Next: Project Details
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -143,9 +148,9 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 <!-- Step 2: Project Details -->
                 <div class="form-step" data-step="2">
-                    <div class="space-y-6">
+                    <div class="space-y-8">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Description</label>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Description</label>
                             <textarea 
                                 name="description" 
                                 required 
@@ -153,19 +158,19 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                                 maxlength="500"
                                 rows="4"
                                 placeholder="Describe your project requirements, goals, and expectations in detail"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
                             ></textarea>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Required Skills</label>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Required Skills</label>
                             <div id="skillTagContainer" class="flex flex-wrap gap-2 mb-2"></div>
                             <div class="flex">
                                 <input 
                                     type="text" 
                                     id="skillInput" 
                                     placeholder="Type a skill and press Enter"
-                                    class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                class="flex-1 px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
                                 >
                                 <input type="hidden" name="skills" id="skillsHidden">
                             </div>
@@ -173,46 +178,46 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                         <div class="grid grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Project Duration</label>
-                                <select 
-                                    name="duration" 
-                                    required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                                >
-                                    <option value="">Select Duration</option>
-                                    <option value="1">Less than 1 week</option>
-                                    <option value="2">1-2 weeks</option>
-                                    <option value="4">2-4 weeks</option>
-                                    <option value="8">1-2 months</option>
-                                    <option value="12">2-3 months</option>
-                                </select>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Duration</label>
+                            <select 
+                                name="duration" 
+                                required
+                                class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
+                            >
+                                <option value="">Select Duration</option>
+                                <option value="1">Less than 1 week</option>
+                                <option value="2">1-2 weeks</option>
+                                <option value="4">2-4 weeks</option>
+                                <option value="8">1-2 months</option>
+                                <option value="12">2-3 months</option>
+                            </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Budget Range</label>
-                                <select 
-                                    name="budget" 
-                                    required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                                >
-                                    <option value="">Select Budget</option>
-                                    <option value="50">Under $50</option>
-                                    <option value="100">$50 - $100</option>
-                                    <option value="250">$100 - $250</option>
-                                    <option value="500">$250 - $500</option>
-                                </select>
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
+                            <select 
+                                name="budget" 
+                                required
+                                class="w-full px-4 py-3 border border-[#00ADB5]/50 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
+                            >
+                                <option value="">Select Budget</option>
+                                <option value="50">Under $50</option>
+                                <option value="100">$50 - $100</option>
+                                <option value="250">$100 - $250</option>
+                                <option value="500">$250 - $500</option>
+                            </select>
                             </div>
                         </div>
 
                         <div class="flex justify-between">
                             <button type="button" onclick="prevStep(1)" 
-                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg transition-colors">
+                                class="bg-[#393E46] hover:bg-[#00ADB5] text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors border border-[#00ADB5]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                                 </svg>
                                 Previous
                             </button>
                             <button type="button" onclick="nextStep(3)" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                                class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
                                 Next: Review
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -224,10 +229,10 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 <!-- Step 3: Review & Submit -->
                 <div class="form-step" data-step="3">
-                    <div class="space-y-6">
+                    <div class="space-y-8">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Files (Optional)</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Files (Optional)</label>
+                            <div class="border-2 border-dashed border-[#00ADB5]/50 rounded-lg p-6 text-center">
                                 <input 
                                     type="file" 
                                     name="project_files[]" 
@@ -239,28 +244,28 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    <p class="text-gray-600">Drag and drop files or click to browse</p>
-                                    <p class="text-xs text-gray-500 mt-2">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                                    <p class="text-[#EEEEEE]/80">Drag and drop files or click to browse</p>
+                                    <p class="text-xs text-[#EEEEEE]/50 mt-2">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
                                 </label>
-                                <div id="fileList" class="mt-4 text-sm text-gray-600"></div>
+                                <div id="fileList" class="mt-4 text-sm text-[#EEEEEE]/80"></div>
                             </div>
                         </div>
 
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h3 class="text-lg font-semibold text-blue-800 mb-2">Project Summary</h3>
-                            <div id="projectSummary" class="space-y-2 text-blue-700"></div>
+                        <div class="bg-[#00ADB5]/10 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-[#00ADB5] mb-2">Project Summary</h3>
+                            <div id="projectSummary" class="space-y-2 text-[#00ADB5]"></div>
                         </div>
 
                         <div class="flex justify-between">
                             <button type="button" onclick="prevStep(2)" 
-                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg transition-colors">
+                                class="bg-[#393E46] hover:bg-[#00ADB5] text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors border border-[#00ADB5]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                                 </svg>
                                 Previous
                             </button>
                             <button type="submit" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors">
+                                class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>

@@ -52,22 +52,92 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
             min-height: 100vh;
+            color: #EEEEEE;
         }
+
+        /* ======================
+           Input Group Styling
+           ====================== */
         .input-group {
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #393E46;
+            border: 1px solid rgba(0, 173, 181, 0.2);
+            position: relative;
+            overflow: hidden;
         }
+
+        .input-group::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 173, 181, 0.1) 10%, transparent 10.01%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+
         .input-group:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            background-color: rgba(57, 62, 70, 0.95);
         }
-        .animate-pulse-slow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+        .input-group:hover::before {
+            transform: translate(-50%, -50%) scale(1);
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+        /* ======================
+           Loading Animation
+           ====================== */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #00ADB5;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ======================
+           Fade-in Animation
+           ====================== */
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out both;
+        }
+
+        /* ======================
+           Mobile Responsiveness
+           ====================== */
+        @media (max-width: 768px) {
+            .input-group {
+                padding: 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -82,14 +152,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
 
         <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE]">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Profile Settings</h1>
                         <p class="text-blue-100">Manage and update your personal information</p>
                     </div>
-                    <div class="bg-white/20 p-3 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-[#00ADB5]/20 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#EEEEEE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
@@ -98,72 +168,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <form id="profileForm" action="" method="POST" class="p-8 space-y-6">
                 <!-- Name Field -->
-                <div class="input-group bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-all">
+                <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <label class="text-gray-800 font-semibold text-lg">Full Name</label>
+                        <label class="text-[#EEEEEE] font-semibold text-lg">Full Name</label>
                     </div>
-                    <input 
-                        type="text" 
-                        name="name" 
+                    <input
+                        type="text"
+                        name="name"
                         id="nameInput"
                         value="<?php echo htmlspecialchars($user['name']); ?>"
                         required
                         minlength="3"
-                        class="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none"
+                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
                         placeholder="Enter your full name"
                     >
-                    <p class="mt-2 text-sm text-gray-500">Your full name as it appears on official documents</p>
+                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your full name as it appears on official documents</p>
                 </div>
 
                 <!-- Department Field -->
-                <div class="input-group bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-all">
+                <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
-                        <label class="text-gray-800 font-semibold text-lg">Department</label>
+                        <label class="text-[#EEEEEE] font-semibold text-lg">Department</label>
                     </div>
-                    <input 
-                        type="text" 
-                        name="department" 
+                    <input
+                        type="text"
+                        name="department"
                         id="departmentInput"
                         value="<?php echo htmlspecialchars($user['department']); ?>"
                         required
-                        class="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 outline-none"
+                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
                         placeholder="Enter your academic department"
                     >
-                    <p class="mt-2 text-sm text-gray-500">Your current academic department or field of study</p>
+                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your current academic department or field of study</p>
                 </div>
 
                 <!-- Matric Number Field -->
-                <div class="input-group bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-all">
+                <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                         </svg>
-                        <label class="text-gray-800 font-semibold text-lg">Matric Number</label>
+                        <label class="text-[#EEEEEE] font-semibold text-lg">Matric Number</label>
                     </div>
-                    <input 
-                        type="text" 
-                        name="matric_number" 
+                    <input
+                        type="text"
+                        name="matric_number"
                         id="matricInput"
                         value="<?php echo htmlspecialchars($user['matric_number']); ?>"
                         required
                         pattern="[A-Za-z0-9]+"
-                        class="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 outline-none"
+                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
                         placeholder="Enter your matric number"
                     >
-                    <p class="mt-2 text-sm text-gray-500">Your unique student identification number</p>
+                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your unique student identification number</p>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-4">
-                    <button 
-                        type="submit" 
-                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                    <button
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-[#00ADB5] to-[#393E46] text-[#EEEEEE] py-4 rounded-lg hover:from-[#00ADB5]/90 hover:to-[#393E46]/90 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
