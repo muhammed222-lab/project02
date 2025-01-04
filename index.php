@@ -341,7 +341,7 @@
                 <!-- Feature Card 1 -->
                 <div class="feature-card glass p-8 rounded-2xl" data-aos="fade-up">
                     <div class="mb-6">
-                        <img src="./assets/images/search.png" alt="Browse" class="w-20 h-20 mx-auto object-contain">
+                        <img src="./assets/images/search.png" alt="Browse" class="w-43 h-43 mx-auto object-contain">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Smart Project
                         Discovery</h3>
@@ -353,7 +353,7 @@
                 <!-- Feature Card 2 -->
                 <div class="feature-card glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
                     <div class="mb-6">
-                        <img src="./assets/images/connect.png" alt="Connect" class="w-20 h-20 mx-auto object-contain">
+                        <img src="./assets/images/connect.png" alt="Connect" class="w-43 h-43 mx-auto object-contain">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Expert Collaboration
                     </h3>
@@ -365,7 +365,7 @@
                 <!-- Feature Card 3 -->
                 <div class="feature-card glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="200">
                     <div class="mb-6">
-                        <img src="./assets/images/control.png" alt="Control" class="w-20 h-20 mx-auto object-contain">
+                        <img src="./assets/images/control.png" alt="Control" class="w-43 h-43 mx-auto object-contain">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Seamless Experience
                     </h3>
