@@ -63,7 +63,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 <body class="antialiased bg-[#222831] text-[#EEEEEE]">
     <?php include 'nav.php'; ?>
 
-    <main class="container mx-auto px-5 pt-32 md:pt-36 pb-20 max-w-4xl">
+    <main class="container mx-auto px-5 pt-16 md:pt-20 pb-20 max-w-4xl">
         <!-- Main form container with blur background -->
         <div class="bg-[#393E46]/95 backdrop-blur-md rounded-2xl overflow-hidden border border-[#00ADB5]/20">
             <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-8 text-[#EEEEEE]">

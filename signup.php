@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -8,37 +8,137 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
     <style>
+        /* CSS Variables for Theme */
+        :root {
+            --bg-primary: #222831;
+            --bg-secondary: #393E46;
+            --accent-color: #00ADB5;
+            --text-primary: #EEEEEE;
+        }
+
         * {
             font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: rgb(140, 181, 168);
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+        }
+
+        /* Advanced Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.2);
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, var(--accent-color), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .form-container:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Input Styles */
+        .custom-input {
+            background-color: var(--bg-primary);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            box-shadow: 0 0 15px rgba(0, 173, 181, 0.3);
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        /* Button Styles */
+        .submit-button {
+            background: linear-gradient(to right, var(--accent-color), var(--bg-secondary));
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.3);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                width: 100%;
+                margin: 1rem;
+            }
+        }
     </style>
 </head>
 
-<body class="min-h-screen flex justify-center items-center p-4">
-
-    <div class="form-container w-full max-w-2xl rounded-2xl shadow-2xl p-8 relative z-10 my-8">
+<body class="antialiased">
+    <div class="form-container w-full max-w-2xl rounded-2xl p-8 relative z-10 my-8" style="animation: float 3s ease-in-out infinite;">
         <a href="index.php" class="flex items-center justify-center space-x-2 mb-8">
-            <span class="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">PROJECT 02</span>
+            <span class="text-2xl font-bold text-[var(--accent-color)]">PROJECT 02</span>
         </a>
 
-        <h2 class="text-2xl font-bold text-center mb-6">Create Your Account</h2>
+        <h2 class="text-2xl font-bold text-center mb-6 text-[var(--text-primary)]">Create Your Account</h2>
         <form id="signupForm" action="php/signup.php" method="POST">
             <div class="space-y-4">
                 <div>
-                    <label for="userRole" class="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
+                    <label for="userRole" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Account Type</label>
                     <select id="userRole" name="userRole"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                         required>
                         <option value="student">Student</option>
                         <option value="freelancer">Freelancer</option>
@@ -51,49 +151,48 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <label for="name" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Full Name</label>
                         <input type="text" id="name" name="name"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             required>
                     </div>
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <label for="phone" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Phone Number</label>
                         <input type="text" id="phone" name="phone"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             required>
                     </div>
                 </div>
 
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <label for="email" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Email Address</label>
                     <input type="email" id="email" name="email"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                         required>
                 </div>
 
                 <div class="relative">
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <label for="password" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Password</label>
                     <div class="relative">
                         <input type="password" id="password" name="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             pattern="@.*[A-Z].*[0-9]"
                             title="Must include '@' followed by at least one uppercase letter and one number"
                             required>
-                        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 focus:outline-none">
+                        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--accent-color)] focus:outline-none">
                             <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
                     </div>
-                    <p class="mt-1 text-sm text-gray-500">Password must include '@', an uppercase letter, and a number</p>
+                    <p class="mt-1 text-sm text-[var(--accent-color)] opacity-80">Password must include '@', an uppercase letter, and a number</p>
                 </div>
             </div>
 
             <div class="mt-6 flex items-center justify-between">
-                <a href="login.php" class="text-green-600 hover:text-green-700 text-sm font-medium">Already have an account?</a>
-                <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors duration-200">
+                <a href="login.php" class="text-[var(--accent-color)] hover:opacity-80 text-sm font-medium">Already have an account?</a>
+                <button type="submit" class="submit-button py-2 px-6 rounded-lg transition-all duration-200">
                     Create Account
                 </button>
             </div>
@@ -113,15 +212,15 @@
                     fields = `
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="department" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                            <label for="department" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Department</label>
                             <input type="text" id="department" name="department"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                                class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                                 required>
                         </div>
                         <div>
-                            <label for="matricNumber" class="block text-sm font-medium text-gray-700 mb-1">Matric Number</label>
+                            <label for="matricNumber" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Matric Number</label>
                             <input type="text" id="matricNumber" name="matricNumber"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                                class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                                 required>
                         </div>
                     </div>`;
@@ -129,30 +228,30 @@
                 case 'freelancer':
                     fields = `
                     <div>
-                        <label for="skills" class="block text-sm font-medium text-gray-700 mb-1">Skills</label>
+                        <label for="skills" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Skills</label>
                         <input type="text" id="skills" name="skills"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             required>
-                        <p class="mt-1 text-sm text-gray-500">Separate multiple skills with commas</p>
+                        <p class="mt-1 text-sm text-[var(--accent-color)] opacity-80">Separate multiple skills with commas</p>
                     </div>`;
                     break;
                 case 'instructor':
                     fields = `
                     <div>
-                        <label for="experience" class="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
+                        <label for="experience" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Experience (Years)</label>
                         <input type="number" id="experience" name="experience"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             required>
                     </div>`;
                     break;
                 case 'creator':
                     fields = `
                     <div>
-                        <label for="portfolio" class="block text-sm font-medium text-gray-700 mb-1">Portfolio URL</label>
+                        <label for="portfolio" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Portfolio URL</label>
                         <input type="url" id="portfolio" name="portfolio"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                            class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                             required>
-                        <p class="mt-1 text-sm text-gray-500">Link to your portfolio or previous work</p>
+                        <p class="mt-1 text-sm text-[var(--accent-color)] opacity-80">Link to your portfolio or previous work</p>
                     </div>`;
                     break;
             }

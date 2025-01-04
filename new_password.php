@@ -8,7 +8,7 @@ $email = $_GET['email'];
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -17,46 +17,159 @@ $email = $_GET['email'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
     <style>
+        /* CSS Variables for Theme */
+        :root {
+            --bg-primary: #222831;
+            --bg-secondary: #393E46;
+            --accent-color: #00ADB5;
+            --text-primary: #EEEEEE;
+        }
+
         * {
             font-family: 'Inter', sans-serif;
         }
+
         body {
-            background-color: #059669;
-            background-image: 
-                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='rgba(5, 150, 105, 0.05)' fill-opacity='0.5'%3E%3Cpath d='M11 18 C 19 26, 31 18, 39 26 C 47 34, 59 26, 67 34 C 75 42, 87 34, 95 42 L 95 100 L 5 100 L 5 10 C 13 18, 25 10, 33 18 C 41 26, 53 18, 61 26 C 69 34, 81 26, 89 34'/%3E%3Cpath d='M-9 42 C -1 50, 11 42, 19 50 C 27 58, 39 50, 47 58 C 55 66, 67 58, 75 66 C 83 74, 95 66, 103 74 L 103 100 L -15 100 L -15 34 C -7 42, 5 34, 13 42 C 21 50, 33 42, 41 50 C 49 58, 61 50, 69 58 C 77 66, 89 58, 97 66'/%3E%3C/g%3E%3C/svg%3E");
-            background-color: #2AA77FFF;
-            background-attachment: fixed;
-            background-repeat: repeat;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            perspective: 1000px;
         }
+
+        /* Advanced Animations */
+        @keyframes backgroundShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
         .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.2);
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: subtleFloat 3s ease-in-out infinite;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, var(--accent-color), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .form-container:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Input Styles */
+        .custom-input {
+            background-color: var(--bg-primary);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            box-shadow: 0 0 15px rgba(0, 173, 181, 0.3);
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        /* Button Styles */
+        .submit-button {
+            background: linear-gradient(to right, var(--accent-color), var(--bg-secondary));
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.3);
+        }
+
+        /* Password Requirements */
+        .password-requirements {
+            background-color: var(--bg-primary);
+            border-left: 4px solid var(--accent-color);
+            color: var(--text-primary);
+            opacity: 0.8;
+        }
+
+        /* Link Styles */
+        .auth-link {
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .auth-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                width: 100%;
+                margin: 1rem;
+            }
         }
     </style>
 </head>
 
-<body class="min-h-screen flex justify-center items-center p-4">
-    
-    <div class="form-container w-full max-w-md rounded-2xl shadow-2xl p-8 relative z-10">
+<body class="antialiased">
+    <div class="form-container w-full max-w-md rounded-2xl p-8 relative z-10">
         <a href="index.php" class="flex items-center justify-center space-x-2 mb-8">
             <img src="./favicon.png" alt="P02" class="w-8 h-8">
-            <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">PROJECT 02</span>
+            <span class="text-2xl font-bold text-[var(--accent-color)]">PROJECT 02</span>
         </a>
         
-        <h2 class="text-2xl font-bold text-center mb-6">Set New Password</h2>
-        <p class="text-gray-600 text-center mb-8">Create a strong password for your account</p>
+        <h2 class="text-2xl font-bold text-center mb-6 text-[var(--text-primary)]">Set New Password</h2>
+        <p class="text-[var(--accent-color)] text-center mb-8 opacity-80">Create a strong password for your account</p>
         
         <form id="newPasswordForm" method="POST" action="update_password.php" class="space-y-4">
             <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
             
             <div>
-                <label for="new_password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                <label for="new_password" class="block text-sm font-medium text-[var(--text-primary)] mb-1">New Password</label>
                 <div class="relative">
                     <input type="password" id="new_password" name="new_password"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                         required>
-                    <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 focus:outline-none">
+                    <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-[var(--accent-color)] focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
@@ -66,12 +179,12 @@ $email = $_GET['email'];
             </div>
             
             <div>
-                <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <label for="confirm_password" class="block text-sm font-medium text-[var(--text-primary)] mb-1">Confirm Password</label>
                 <div class="relative">
                     <input type="password" id="confirm_password" name="confirm_password"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        class="custom-input w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] transition-colors"
                         required>
-                    <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 focus:outline-none">
+                    <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-[var(--accent-color)] focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
@@ -80,8 +193,8 @@ $email = $_GET['email'];
                 </div>
             </div>
 
-            <div class="bg-blue-50 rounded-lg p-4 text-sm text-blue-700">
-                <p class="font-medium mb-1">Password Requirements:</p>
+            <div class="password-requirements rounded-lg p-4 text-sm">
+                <p class="font-medium mb-1 text-[var(--accent-color)]">Password Requirements:</p>
                 <ul class="list-disc list-inside space-y-1">
                     <li>At least 8 characters long</li>
                     <li>Include at least one uppercase letter</li>
@@ -91,11 +204,11 @@ $email = $_GET['email'];
             </div>
 
             <div class="flex items-center justify-between pt-2">
-                <a href="login.php" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                <a href="login.php" class="auth-link text-sm font-medium">
                     Back to Login
                 </a>
                 <button type="submit" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition-colors duration-200">
+                    class="submit-button py-2 px-6 rounded-lg transition-all duration-200">
                     Update Password
                 </button>
             </div>

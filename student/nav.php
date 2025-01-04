@@ -1,19 +1,19 @@
 <!-- Student Navigation Bar -->
 <!-- Main navigation container with dark theme and blur effect -->
-<!-- Main navigation container with dark theme and blur effect -->
 <nav class="fixed top-0 left-0 w-full bg-[#222831]/90 backdrop-blur-md z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo Section (Always Visible) -->
         <a href="dashboard.php" class="flex items-center space-x-3 group">
             <img src="../favicon.png" alt="Project Hub" class="w-10 h-10 rounded-full transition-transform group-hover:rotate-12">
-            <!-- Logo text with accent color hover effect -->
             <span class="text-2xl font-bold text-[#00ADB5] group-hover:text-[#00ADB5]/90 transition-colors">
                 Project Hub
             </span>
         </a>
 
-        <!-- Desktop navigation links -->
+        <!-- Desktop Navigation (Visible on md and larger screens) -->
         <div class="hidden md:flex items-center space-x-6">
             <div class="flex space-x-4">
+                <!-- Desktop Navigation Links -->
                 <a href="dashboard.php" class="nav-link group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#EEEEEE] group-hover:text-[#00ADB5] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -40,8 +40,8 @@
                 </a>
             </div>
 
+            <!-- Profile Dropdown (Desktop) -->
             <div class="relative" x-data="{ open: false }">
-                <!-- Profile dropdown button -->
                 <button 
                     @click="open = !open" 
                     class="flex items-center text-[#EEEEEE] hover:text-[#00ADB5] transition-colors group"
@@ -86,13 +86,10 @@
                     </a>
                 </div>
             </div>
+        </div>
 
-<!-- Student Navigation Bar -->
-<!-- Main navigation container with dark theme and blur effect -->
-<nav class="        </div>
-
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden flex items-center">
+        <!-- Mobile Hamburger Menu Button (Only Visible on Mobile) -->
+        <div class="md:hidden">
             <button id="mobile-menu-button" class="text-[#EEEEEE] hover:text-[#00ADB5] transition-colors focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -101,14 +98,17 @@
         </div>
     </div>
 
-    <!-- Mobile Menu with blur effect and animation -->
-      <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-[#222831]/95 backdrop-blur-md shadow-lg z-40 hidden md:hidden transform transition-all duration-300 ease-out translate-x-full">
+    <!-- Mobile Slide-out Menu (Only Visible on Mobile) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-[#222831]/95 backdrop-blur-md shadow-lg z-40 md:hidden transform transition-transform duration-300 ease-in-out translate-x-full">
         <div class="h-full flex flex-col py-16 px-4">
+            <!-- Close Button for Mobile Menu -->
             <button id="mobile-menu-close" class="absolute top-4 right-4 text-[#EEEEEE] hover:text-[#00ADB5] transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
+
+            <!-- Mobile Navigation Links -->
             <div class="space-y-4">
                 <a href="dashboard.php" class="block py-3 px-4 text-[#EEEEEE] hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] rounded-lg transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,6 +134,8 @@
                     </svg>
                     Messages
                 </a>
+
+                <!-- Mobile Profile and Account Section -->
                 <div class="mt-6 space-y-2">
                     <a href="profile.php" class="block py-3 px-4 text-[#EEEEEE] hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] rounded-lg transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -161,32 +163,39 @@
 
 <!-- Include Alpine.js for dropdowns and transitions -->
 <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- Mobile Menu JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Get references to mobile menu elements
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenuCloseButton = document.getElementById('mobile-menu-close');
     const mobileMenu = document.getElementById('mobile-menu');
 
+    // Open mobile menu when hamburger button is clicked
     mobileMenuButton.addEventListener('click', function() {
-        mobileMenu.classList.remove('hidden');
-        // Small delay to ensure the transition works
-        requestAnimationFrame(() => {
-            mobileMenu.classList.remove('translate-x-full');
-        });
+        mobileMenu.classList.remove('translate-x-full');
     });
 
+    // Close mobile menu when close button is clicked
     mobileMenuCloseButton.addEventListener('click', function() {
         mobileMenu.classList.add('translate-x-full');
-        setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+    });
+
+    // Optional: Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!mobileMenu.contains(event.target) && 
+            !mobileMenuButton.contains(event.target) && 
+            !mobileMenuCloseButton.contains(event.target)) {
+            mobileMenu.classList.add('translate-x-full');
+        }
     });
 });
 </script>
 
+<!-- Shared Navigation Styles -->
 <style>
-/* Include the shared student styles */
-@import url('../assets/css/student.css');
-
-/* Additional navigation-specific styles */
+/* Shared navigation link styles */
 .nav-link {
     @apply flex items-center text-[#EEEEEE] hover:text-[#00ADB5] transition-colors px-3 py-2 rounded-lg;
 }
