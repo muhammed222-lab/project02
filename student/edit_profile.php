@@ -113,9 +113,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
+            background: #222831;
             min-height: 100vh;
             color: #EEEEEE;
+        }
+
+        /* ======================
+           Animations
+           ====================== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 173, 181, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 173, 181, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 173, 181, 0);
+            }
+        }
+
+        .welcome-gradient {
+            background: linear-gradient(to right, #00ADB5, #393E46);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* ======================
@@ -213,7 +257,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
 <body class="antialiased">
     <?php include 'nav.php'; ?>
 
-    <main class="container mx-auto px-4 py-16 max-w-4xl">
+    <main class="container mx-auto px-4 py-16 max-w-4xl animate-[fadeIn_0.6s_ease-out]">
         <?php if (isset($_SESSION['success_message'])): ?>
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 animate-fade-in" role="alert">
                 <p class="text-green-700"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></p>
@@ -226,8 +270,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
             </div>
         <?php endif; ?>
 
-        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE]">
+        <div class="bg-[#393E46] shadow-2xl rounded-2xl overflow-hidden border border-[#00ADB5]/20 transform hover:scale-[1.01] transition-all duration-300">
+            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE] relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#00ADB5]/0 via-[#00ADB5]/10 to-[#00ADB5]/0 animate-[pulse_3s_infinite]"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Profile Settings</h1>
@@ -243,7 +288,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
 
             <div class="p-8 space-y-8">
                 <!-- Profile Information -->
-                <section>
+                <section class="animate-[slideIn_0.3s_ease-out]">
                     <div class="flex items-center mb-6">
                         <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -288,15 +333,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                         <button
                             type="submit"
                             name="update_profile"
-                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
+                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ADB5]/20 relative overflow-hidden group"
                         >
-                            Update Profile
+                            <div class="relative z-10 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Update Profile
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#00ADB5]/0 via-[#00ADB5]/10 to-[#00ADB5]/0 group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                     </form>
                 </section>
 
                 <!-- Email Settings -->
-                <section>
+                <section class="animate-[slideIn_0.4s_ease-out]">
                     <div class="flex items-center mb-6">
                         <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -328,15 +379,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                         <button
                             type="submit"
                             name="update_email"
-                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors"
+                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ADB5]/20 relative overflow-hidden group"
                         >
-                            Update Email
+                            <div class="relative z-10 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                Update Email
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#00ADB5]/0 via-[#00ADB5]/10 to-[#00ADB5]/0 group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                     </form>
                 </section>
 
                 <!-- Password Settings -->
-                <section>
+                <section class="animate-[slideIn_0.5s_ease-out]">
                     <div class="flex items-center mb-6">
                         <div class="bg-[#00ADB5]/10 p-3 rounded-full mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -385,7 +442,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
                         <button
                             type="submit"
                             name="update_password"
-                            Update Password
+                            class="w-full bg-[#00ADB5] text-[#EEEEEE] py-3 rounded-lg hover:bg-[#00ADB5]/90 transition-colors transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ADB5]/20 relative overflow-hidden group"
+                        >
+                            <div class="relative z-10 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                </svg>
+                                Update Password
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#00ADB5]/0 via-[#00ADB5]/10 to-[#00ADB5]/0 group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                     </form>
                 </section>

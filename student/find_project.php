@@ -80,9 +80,31 @@ $projects = $stmt->fetchAll();
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
+            background-color: #222831;
             min-height: 100vh;
             color: #EEEEEE;
         }
@@ -97,8 +119,23 @@ $projects = $stmt->fetchAll();
             border: 1px solid rgba(0, 173, 181, 0.2);
             position: relative;
             overflow: hidden;
+            transform-origin: center;
         }
 
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background-color: rgba(57, 62, 70, 0.95);
+            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.1);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out both;
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.4s ease-out both;
+        }
+        /* Additional hover and interaction effects */
         .project-card::before {
             content: '';
             position: absolute;
@@ -110,11 +147,6 @@ $projects = $stmt->fetchAll();
             transform: translate(-50%, -50%) scale(0);
             transition: transform 0.5s ease;
             pointer-events: none;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(57, 62, 70, 0.95);
         }
 
         .project-card:hover::before {
@@ -198,7 +230,7 @@ $projects = $stmt->fetchAll();
             <form method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Search Projects</label>
+                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Search Projects</label>
                             <input
                                 type="text"
                                 name="search"
@@ -208,7 +240,7 @@ $projects = $stmt->fetchAll();
                             >
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Project Category</label>
+                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Category</label>
                             <select
                                 name="category"
                                 class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
@@ -222,7 +254,7 @@ $projects = $stmt->fetchAll();
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Budget Range</label>
+                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
                             <select
                                 name="budget"
                                 class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
@@ -238,8 +270,8 @@ $projects = $stmt->fetchAll();
 
                 <div class="flex justify-between items-center mt-6">
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600">View:</span>
-                        <div class="flex bg-gray-100 rounded-lg p-1">
+                        <span class="text-sm text-[#EEEEEE]/70">View:</span>
+                        <div class="flex bg-[#393E46] rounded-lg p-1">
                             <button 
                                 type="button" 
                                 onclick="toggleView('grid')" 
