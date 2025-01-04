@@ -22,7 +22,6 @@ function validateInput($input, $type = 'string') {
             return strlen($input) >= 2 &amp;&amp; strlen($input) <= 255;
     }
 }
-
 try {
     // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
