@@ -50,22 +50,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #222831 0%, #393E46 100%);
-            min-height: 100vh;
-            color: #EEEEEE;
+        /* CSS Variables for Theme */
+        :root {
+            --bg-primary: #222831;
+            --bg-secondary: #393E46;
+            --accent-color: #00ADB5;
+            --text-primary: #EEEEEE;
         }
 
-        /* ======================
-           Input Group Styling
-           ====================== */
+        /* Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        /* Input Group Styling */
         .input-group {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #393E46;
-            border: 1px solid rgba(0, 173, 181, 0.2);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(0, 173, 181, 0.2);
         }
 
         .input-group::before {
@@ -79,6 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translate(-50%, -50%) scale(0);
             transition: transform 0.5s ease;
             pointer-events: none;
+            z-index: 1;
         }
 
         .input-group:hover {
@@ -90,46 +98,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* ======================
-           Loading Animation
-           ====================== */
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #00ADB5;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        /* Input Styles */
+        .custom-input {
+            background-color: var(--bg-secondary);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        .custom-input::placeholder {
+            color: var(--accent-color);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            transform: translateX(0);
         }
 
-        /* ======================
-           Fade-in Animation
-           ====================== */
+        .custom-input:focus::placeholder {
+            opacity: 0.5;
+            transform: translateX(10px);
+        }
+
+        .custom-input:focus {
+            box-shadow: 0 0 15px rgba(0, 173, 181, 0.3);
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        /* Placeholder Glow Animation */
+        @keyframes placeholder-glow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.5; }
+        }
+
+        .custom-input:not(:focus)::placeholder {
+            animation: placeholder-glow 2s infinite;
+        }
+
+        /* Animations */
         @keyframes fade-in {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         .animate-fade-in {
             animation: fade-in 0.6s ease-out both;
         }
 
-        /* ======================
-           Mobile Responsiveness
-           ====================== */
+        .animate-pulse {
+            animation: subtle-pulse 2s infinite;
+        }
+
+        /* Success Message */
+        .success-message {
+            background-color: rgba(0, 173, 181, 0.1);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* Submit Button */
+        .submit-button {
+            background: linear-gradient(to right, var(--accent-color), var(--bg-secondary));
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .input-group {
                 padding: 1.5rem;
@@ -146,20 +188,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <main class="container mx-auto px-4 py-16 max-w-4xl">
         <?php if(isset($_SESSION['success_message'])): ?>
-        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 animate-fade-in" role="alert">
-            <p class="text-green-700"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></p>
+        <div class="success-message p-4 mb-6 animate-fade-in" role="alert">
+            <p class="text-[var(--accent-color)]"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></p>
         </div>
         <?php endif; ?>
 
-        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div class="bg-gradient-to-r from-[#00ADB5] to-[#393E46] p-6 text-[#EEEEEE]">
+        <div class="bg-[var(--bg-secondary)] shadow-2xl rounded-2xl overflow-hidden animate-fade-in">
+            <div class="bg-gradient-to-r from-[var(--accent-color)] to-[var(--bg-secondary)] p-6 text-[var(--text-primary)]">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Profile Settings</h1>
-                        <p class="text-blue-100">Manage and update your personal information</p>
+                        <p class="text-opacity-80">Manage and update your personal information</p>
                     </div>
-                    <div class="bg-[#00ADB5]/20 p-3 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#EEEEEE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-[var(--accent-color)]/20 p-3 rounded-full animate-pulse">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
@@ -170,10 +212,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Name Field -->
                 <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[var(--accent-color)] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <label class="text-[#EEEEEE] font-semibold text-lg">Full Name</label>
+                        <label class="text-[var(--text-primary)] font-semibold text-lg">Full Name</label>
                     </div>
                     <input
                         type="text"
@@ -182,19 +224,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         value="<?php echo htmlspecialchars($user['name']); ?>"
                         required
                         minlength="3"
-                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
+                        class="custom-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all duration-300 outline-none"
                         placeholder="Enter your full name"
                     >
-                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your full name as it appears on official documents</p>
+                    <p class="mt-2 text-sm text-opacity-80">Your full name as it appears on official documents</p>
                 </div>
 
                 <!-- Department Field -->
                 <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[var(--accent-color)] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
-                        <label class="text-[#EEEEEE] font-semibold text-lg">Department</label>
+                        <label class="text-[var(--text-primary)] font-semibold text-lg">Department</label>
                     </div>
                     <input
                         type="text"
@@ -202,19 +244,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         id="departmentInput"
                         value="<?php echo htmlspecialchars($user['department']); ?>"
                         required
-                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
+                        class="custom-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all duration-300 outline-none"
                         placeholder="Enter your academic department"
                     >
-                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your current academic department or field of study</p>
+                    <p class="mt-2 text-sm text-opacity-80">Your current academic department or field of study</p>
                 </div>
 
                 <!-- Matric Number Field -->
                 <div class="input-group rounded-xl p-6">
                     <div class="flex items-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[var(--accent-color)] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                         </svg>
-                        <label class="text-[#EEEEEE] font-semibold text-lg">Matric Number</label>
+                        <label class="text-[var(--text-primary)] font-semibold text-lg">Matric Number</label>
                     </div>
                     <input
                         type="text"
@@ -223,17 +265,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         value="<?php echo htmlspecialchars($user['matric_number']); ?>"
                         required
                         pattern="[A-Za-z0-9]+"
-                        class="w-full px-4 py-3 bg-[#393E46] border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all duration-300 outline-none text-[#EEEEEE]"
+                        class="custom-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all duration-300 outline-none"
                         placeholder="Enter your matric number"
                     >
-                    <p class="mt-2 text-sm text-[#EEEEEE]/80">Your unique student identification number</p>
+                    <p class="mt-2 text-sm text-opacity-80">Your unique student identification number</p>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-4">
                     <button
                         type="submit"
-                        class="w-full bg-gradient-to-r from-[#00ADB5] to-[#393E46] text-[#EEEEEE] py-4 rounded-lg hover:from-[#00ADB5]/90 hover:to-[#393E46]/90 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                        class="submit-button w-full text-[var(--text-primary)] py-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

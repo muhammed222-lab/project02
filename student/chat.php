@@ -77,8 +77,17 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             animation: typing 1.4s infinite;
         }
         @keyframes typing {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.5; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+
+        .message-container {
+            animation: subtleFloat 3s ease-in-out infinite;
         }
     </style>
 </head>
