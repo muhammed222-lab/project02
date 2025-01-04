@@ -129,48 +129,47 @@ $projects = $stmt->fetchAll();
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-<<<<<<< HEAD
     body {
         font-family: 'Inter', sans-serif;
         background: linear-gradient(135deg, #222831 0%, #393E46 100%);
         min-height: 100vh;
         color: #EEEEEE;
     }
-=======
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+    =======@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #222831;
-            min-height: 100vh;
-            color: #EEEEEE;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
         }
->>>>>>> cbd3d120b905ccab86a7d4f94c9344e9251bb8fd
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #222831;
+        min-height: 100vh;
+        color: #EEEEEE;
+    }
 
     /* ======================
            Project Card Styling
            ====================== */
-<<<<<<< HEAD
     .project-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         transform: translateY(0);
@@ -228,23 +227,24 @@ $projects = $stmt->fetchAll();
             animation: slideIn 0.4s ease-out both;
         }
         /* Additional hover and interaction effects */
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(0, 173, 181, 0.1) 10%, transparent 10.01%);
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.5s ease;
-            pointer-events: none;
-        }
+    .project-card::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%;
+        height: 300%;
+        background: radial-gradient(circle, rgba(0, 173, 181, 0.1) 10%, transparent 10.01%);
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.5s ease;
+        pointer-events: none;
+    }
 
-        .project-card:hover::before {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        /* ======================
+    .project-card:hover::before {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ======================
 >>>>>>> cbd3d120b905ccab86a7d4f94c9344e9251bb8fd
            View Toggle Buttons
            ====================== */
@@ -328,7 +328,6 @@ $projects = $stmt->fetchAll();
             <form method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-<<<<<<< HEAD
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search Projects</label>
                         <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
                             placeholder="Keywords, skills, or project name"
@@ -338,23 +337,15 @@ $projects = $stmt->fetchAll();
                         <label class="block text-sm font-medium text-gray-700 mb-2">Project Category</label>
                         <select name="category"
                             class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-=======
-                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Search Projects</label>
-                            <input
-                                type="text"
-                                name="search"
-                                value="<?php echo htmlspecialchars($search); ?>"
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Search Projects</label>
+                            <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
                                 placeholder="Keywords, skills, or project name"
-                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
-                            >
+                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Category</label>
-                            <select
-                                name="category"
-                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
-                            >
->>>>>>> cbd3d120b905ccab86a7d4f94c9344e9251bb8fd
+                        <select name="category"
+                            class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
                             <option value="">All Categories</option>
                             <option value="Writing">Writing & Translation</option>
                             <option value="Design">Design & Creative</option>
@@ -364,56 +355,49 @@ $projects = $stmt->fetchAll();
                         </select>
                     </div>
                     <div>
-<<<<<<< HEAD
+
                         <label class="block text-sm font-medium text-gray-700 mb-2">Budget Range</label>
                         <select name="budget"
                             class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-=======
-                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
-                            <select
-                                name="budget"
-                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]"
-                            >
->>>>>>> cbd3d120b905ccab86a7d4f94c9344e9251bb8fd
-                            <option value="">Any Budget</option>
-                            <option value="50">Under $50</option>
-                            <option value="100">Under $100</option>
-                            <option value="250">Under $250</option>
-                            <option value="500">Under $500</option>
-                        </select>
+
+                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
+                            <select name="budget"
+                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
+
+                                <option value="">Any Budget</option>
+                                <option value="50">Under $50</option>
+                                <option value="100">Under $100</option>
+                                <option value="250">Under $250</option>
+                                <option value="500">Under $500</option>
+                            </select>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center mt-6">
                     <div class="flex items-center space-x-4">
-<<<<<<< HEAD
                         <span class="text-sm text-gray-600">View:</span>
                         <div class="flex bg-gray-100 rounded-lg p-1">
                             <button type="button" onclick="toggleView('grid')"
                                 class="view-toggle px-4 py-2 rounded-lg view-toggle-active" id="gridViewBtn">
-=======
-                        <span class="text-sm text-[#EEEEEE]/70">View:</span>
-                        <div class="flex bg-[#393E46] rounded-lg p-1">
-                            <button 
-                                type="button" 
-                                onclick="toggleView('grid')" 
-                                class="view-toggle px-4 py-2 rounded-lg view-toggle-active"
-                                id="gridViewBtn"
-                            >
->>>>>>> cbd3d120b905ccab86a7d4f94c9344e9251bb8fd
-                                Grid
-                            </button>
-                            <button type="button" onclick="toggleView('list')" class="view-toggle px-4 py-2 rounded-lg"
-                                id="listViewBtn">
-                                List
-                            </button>
+
+                                <span class="text-sm text-[#EEEEEE]/70">View:</span>
+                                <div class="flex bg-[#393E46] rounded-lg p-1">
+                                    <button type="button" onclick="toggleView('grid')"
+                                        class="view-toggle px-4 py-2 rounded-lg view-toggle-active" id="gridViewBtn">
+
+                                        Grid
+                                    </button>
+                                    <button type="button" onclick="toggleView('list')"
+                                        class="view-toggle px-4 py-2 rounded-lg" id="listViewBtn">
+                                        List
+                                    </button>
+                                </div>
                         </div>
+                        <button type="submit"
+                            class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
+                            Apply Filters
+                        </button>
                     </div>
-                    <button type="submit"
-                        class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
-                        Apply Filters
-                    </button>
-                </div>
             </form>
         </section>
 
