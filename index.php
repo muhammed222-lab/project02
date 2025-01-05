@@ -206,13 +206,15 @@
         opacity: 1;
     }
 
-    /* Button Styles */
+    /* Enhanced Button Styles */
     .btn-primary {
         background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
         position: relative;
         z-index: 1;
         overflow: hidden;
         transition: all 0.5s;
+        box-shadow: 0 4px 15px rgba(0, 173, 181, 0.2);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .btn-primary::before {
@@ -225,11 +227,35 @@
         background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
         z-index: -1;
         opacity: 0;
-        transition: opacity 0.5s;
+        transition: all 0.5s;
+        transform: translateY(100%);
     }
 
     .btn-primary:hover::before {
         opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-primary:hover {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 25px rgba(0, 173, 181, 0.4);
+    }
+
+    /* Button Pulse Animation */
+    @keyframes button-pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(0, 173, 181, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(0, 173, 181, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 173, 181, 0);
+        }
+    }
+
+    .animate-button-pulse {
+        animation: button-pulse 2s infinite;
     }
 
     /* Stats Counter Animation */
@@ -278,21 +304,21 @@
 
     <!-- Navigation -->
     <nav
-        class="fixed w-full z-50 top-0 left-0 right-0 bg-[var(--bg-primary)]/95 backdrop-blur-xl border-b border-[var(--accent-color)]/30 shadow-lg">
-        <div class="container mx-auto px-8 py-4">
+        class="fixed w-full z-50 top-0 left-0 right-0 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--accent-color)]/20 shadow-md transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
             <div class="flex justify-between items-center">
                 <a href="index.php" class="flex items-center space-x-3 group">
                     <img src="./favicon.png" alt="P02"
                         class="w-10 h-10 rounded-2xl transform transition-all duration-300 group-hover:rotate-12 group-hover:scale-110">
                     <span class="text-2xl font-bold text-[var(--accent-color)]">PROJECT 02</span>
                 </a>
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-3 sm:space-x-4">
                     <a href="login.php"
-                        class="text-white text-base font-semibold px-5 py-2 rounded-full hover:text-[var(--accent-color)] transition-all duration-300 hover:-translate-y-1 hover:bg-[var(--accent-color)]/10">
+                        class="text-white/90 text-sm font-medium px-3 py-1.5 rounded-full hover:text-[var(--accent-color)] transition-all duration-300 hover:-translate-y-1 hover:bg-[var(--accent-color)]/10 hover:shadow-lg hover:shadow-[var(--accent-color)]/20">
                         Login
                     </a>
                     <a href="signup.php"
-                        class="bg-[var(--accent-color)] text-black text-base font-semibold px-6 py-2 rounded-full transform transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:-translate-y-1 relative overflow-hidden">
+                        class="bg-[var(--accent-color)]/90 text-white text-sm font-medium px-4 py-1.5 rounded-full transform transition-all duration-300 hover:scale-105 hover:bg-[var(--accent-color)] hover:shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:-translate-y-1 relative overflow-hidden group">
                         <span class="relative z-10">Get Started</span>
                         <span
                             class="absolute inset-0 bg-white opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
@@ -301,9 +327,11 @@
             </div>
         </div>
     </nav>
-    <!-- Hero Section -->
-    <header class="min-h-screen flex items-center relative overflow-hidden hero-background">
-        <div class="container mx-auto px-6 relative z-10">
+    <!-- Main Content -->
+    <main class="relative">
+        <!-- Hero Section -->
+        <header class="min-h-screen flex items-center relative overflow-hidden hero-background pt-14 sm:pt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-6xl md:text-7xl font-bold mb-8 hero-text text-white" data-aos="fade-up">
                     Transform Your <span class="gradient-text">Final Year Project</span> Journey
@@ -311,14 +339,14 @@
                 <p class="text-xl md:text-2xl mb-12 text-white/90 hero-text" data-aos="fade-up" data-aos-delay="100">
                     Connect with expert creators, discover innovative projects, and bring your academic vision to life.
                 </p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6"
+                <div class="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 md:space-x-10"
                     data-aos="fade-up" data-aos-delay="200">
                     <a href="signup.php"
-                        class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-[var(--accent-primary)]/30">
+                        class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-[var(--accent-primary)]/30 transform hover:scale-105 transition-all duration-300 hover:-translate-y-2 animate-button-pulse">
                         Start Your Journey
                     </a>
                     <a href="#features"
-                        class="px-8 py-4 rounded-xl text-lg font-semibold border-2 border-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/10 transition-colors">
+                        class="px-8 py-4 rounded-xl text-lg font-semibold border-2 border-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/20 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-[var(--accent-primary)]/20 group">
                         Explore Features
                     </a>
                 </div>
