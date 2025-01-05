@@ -1,162 +1,74 @@
 <?php
+// Include database connection
+include '../php/db.php';
+
 session_start();
-header('Content-Type: application/json');
 
-// Include database and environment configurations
-require_once '../php/db.php';
-require_once '../vendor/autoload.php';
-
-// Load environment variables
-try {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-} catch (Exception $e) {
-    error_log('Dotenv Error: ' . $e->getMessage());
-    die('Environment configuration error');
+// Ensure the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    die("Unauthorized access.");
 }
 
-// Logging function
-function logTransaction($conn, $user_id, $project_title, $amount, $status, $details = null) {
-    $logQuery = "INSERT INTO transaction_logs 
-                 (user_id, project_title, amount, status, details, created_at) 
-                 VALUES (:user_id, :project_title, :amount, :status, :details, NOW())";
-    $logStmt = $conn->prepare($logQuery);
-    $logStmt->execute([
-        ':user_id' => $user_id,
-        ':project_title' => $project_title,
-        ':amount' => $amount,
-        ':status' => $status,
-        ':details' => $details ? json_encode($details) : null
-    ]);
+$user_id = $_SESSION['user_id'];
+define('FLW_SECRET_KEY', 'FLWSECK_TEST-0a93444ae09378f3732b3b131af4f572-X');
+// Get payment details from the query string
+$project_id = $_GET['project_id'] ?? null;
+$price = $_GET['price'] ?? null;
+$title = $_GET['title'] ?? null;
+
+if (!$project_id || !$price || !$title) {
+    die("Invalid payment request.");
 }
 
-// Validate input
-function validatePaymentInput($amount, $projectTitle) {
-    $errors = [];
+// Save project_id in session
+$_SESSION['project_id'] = $project_id;
 
-    // Validate amount
-    if (!is_numeric($amount) || $amount <= 0) {
-        $errors[] = 'Invalid payment amount';
-    }
+// Fetch user details from the database
+$stmt = $conn->prepare("SELECT email, name FROM users WHERE id = ?");
+$stmt->execute([$user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Validate project title
-    if (empty($projectTitle) || strlen($projectTitle) > 255) {
-        $errors[] = 'Invalid project title';
-    }
-
-    return $errors;
+if (!$user) {
+    die("User details not found.");
 }
 
-try {
-    // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        throw new Exception('Unauthorized access', 401);
-    }
+// Prepare the payload for Flutterwave
+$payload = [
+    'tx_ref' => uniqid(), // Unique transaction reference
+    'amount' => $price,
+    'currency' => 'NGN',
+    'redirect_url' => 'http://localhost/project_02/student/payment_confirmation.php', // Redirect after payment
+    'payment_options' => 'card, banktransfer, ussd',
+    'customer' => [
+        'email' => $user['email'], // Use email fetched from the database
+        'name' => $user['name'],   // Use name fetched from the database
+    ],
+];
 
-    // Validate and sanitize input
-    $amount = $_GET['amount'] ?? null;
-    $projectTitle = $_GET['title'] ?? null;
+// Send the payment request to Flutterwave
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.flutterwave.com/v3/payments');
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer ' . FLW_SECRET_KEY,
+    'Content-Type: application/json',
+]);
 
-    $inputErrors = validatePaymentInput($amount, $projectTitle);
-    if (!empty($inputErrors)) {
-        throw new Exception(implode(', ', $inputErrors), 400);
-    }
+$response = curl_exec($ch);
+curl_close($ch);
 
-    // Fetch user details
-    $user_id = $_SESSION['user_id'];
-    $query = "SELECT * FROM users WHERE id = :user_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+$response_data = json_decode($response, true);
 
-    if (!$user) {
-        throw new Exception('User not found', 404);
-    }
+// Check if the payment link was created successfully
+if (isset($response_data['status']) && $response_data['status'] === 'success') {
+    $payment_link = $response_data['data']['link'];
 
-    $buyerEmail = $user['email'];
-    if (!filter_var($buyerEmail, FILTER_VALIDATE_EMAIL)) {
-        throw new Exception('Invalid buyer email', 400);
-    }
-
-    // Get Flutterwave secret key
-    $secretKey = $_ENV['FLW_SECRET_KEY'] ?? null;
-    if (!$secretKey) {
-        throw new Exception('Payment gateway configuration error', 500);
-    }
-
-    // Create transaction payload
-    $transactionRef = "project02_" . uniqid();
-    $data = [
-        "tx_ref" => $transactionRef,
-        "amount" => $amount,
-        "currency" => "NGN",
-        "redirect_url" => "http://localhost/project_02/student/verify_transaction.php",
-        "payment_type" => "card",
-        "customer" => [
-            "email" => $buyerEmail,
-            "name" => $user['name']
-        ],
-        "customizations" => [
-            "title" => "Payment for " . $projectTitle,
-            "description" => "Project Purchase: " . $projectTitle
-        ]
-    ];
-
-    // Initiate payment via cURL
-    $curl = curl_init();
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.flutterwave.com/v3/payments",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode($data),
-        CURLOPT_HTTPHEADER => [
-            "Authorization: Bearer $secretKey",
-            "Content-Type: application/json"
-        ],
-    ]);
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
-
-    if ($err) {
-        // Log cURL error
-        logTransaction($conn, $user_id, $projectTitle, $amount, 'failed', ['error' => $err]);
-        throw new Exception('Payment gateway communication error', 500);
-    }
-
-    $responseData = json_decode($response, true);
-
-    // Handle payment initiation response
-    if ($responseData['status'] === 'success') {
-        $paymentUrl = $responseData['data']['link'];
-        
-        // Log successful payment initiation
-        logTransaction($conn, $user_id, $projectTitle, $amount, 'initiated', [
-            'transaction_ref' => $transactionRef,
-            'payment_link' => $paymentUrl
-        ]);
-
-        // Redirect to payment URL
-        header("Location: $paymentUrl");
-        exit();
-    } else {
-        // Log payment initiation failure
-        logTransaction($conn, $user_id, $projectTitle, $amount, 'failed', $responseData);
-        throw new Exception('Payment initiation failed: ' . $responseData['message'], 400);
-    }
-
-} catch (Exception $e) {
-    // Log any exceptions
-    error_log('Payment Processing Error: ' . $e->getMessage());
-
-    // Redirect to error page with message
-    $_SESSION['payment_error'] = $e->getMessage();
-    header("Location: payment_error.php");
+    // Redirect the user to the payment link
+    header("Location: $payment_link");
     exit();
+} else {
+    echo "Error: Unable to initiate payment. " . ($response_data['message'] ?? "Unknown error.");
 }
+?>

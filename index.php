@@ -304,7 +304,7 @@
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center relative overflow-hidden hero-background">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
+            <div class="max-w-4xl mx-auto text-center z-index-2">
                 <h1 class="text-6xl md:text-7xl font-bold mb-8 hero-text text-white" data-aos="fade-up">
                     Transform Your <span class="gradient-text">Final Year Project</span> Journey
                 </h1>
