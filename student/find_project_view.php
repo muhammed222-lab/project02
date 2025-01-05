@@ -185,6 +185,25 @@
     }
 
     /* ======================
+           Bookmark Button Styling
+           ====================== */
+    .bookmark-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .bookmark-btn svg {
+        transition: fill 0.3s ease, transform 0.2s ease;
+    }
+    
+    .bookmark-btn:hover svg {
+        transform: scale(1.1);
+    }
+    
+    .bookmark-btn.saved svg {
+        fill: #00ADB5;
+    }
+
+    /* ======================
            Mobile Responsiveness
            ====================== */
     @media (max-width: 768px) {
@@ -220,21 +239,15 @@
             class="bg-[#393E46]/95 backdrop-blur-md rounded-2xl p-8 mb-12 border border-[#00ADB5]/20 animate-fade-in">
             <form method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Search Projects -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Search Projects</label>
+                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Search Projects</label>
                         <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
                             placeholder="Keywords, skills, or project name"
                             class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Project Category</label>
-                        <select name="category"
-                            class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Search Projects</label>
-                            <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
-                                placeholder="Keywords, skills, or project name"
-                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-                    </div>
+
+                    <!-- Project Category -->
                     <div>
                         <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Project Category</label>
                         <select name="category"
@@ -247,50 +260,40 @@
                             <option value="Business">Business & Consulting</option>
                         </select>
                     </div>
-                    <div>
 
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Budget Range</label>
+                    <!-- Budget Range -->
+                    <div>
+                        <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
                         <select name="budget"
                             class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-
-                            <label class="block text-sm font-medium text-[#EEEEEE] mb-2">Budget Range</label>
-                            <select name="budget"
-                                class="w-full px-4 py-3 border border-[#00ADB5]/20 rounded-lg focus:ring-2 focus:ring-[#00ADB5] focus:border-transparent transition-all bg-[#393E46] text-[#EEEEEE]">
-
-                                <option value="">Any Budget</option>
-                                <option value="50">Under $50</option>
-                                <option value="100">Under $100</option>
-                                <option value="250">Under $250</option>
-                                <option value="500">Under $500</option>
-                            </select>
+                            <option value="">Any Budget</option>
+                            <option value="50">Under $50</option>
+                            <option value="100">Under $100</option>
+                            <option value="250">Under $250</option>
+                            <option value="500">Under $500</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center mt-6">
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600">View:</span>
-                        <div class="flex bg-gray-100 rounded-lg p-1">
+                        <span class="text-sm text-[#EEEEEE]/70">View:</span>
+                        <div class="flex bg-[#393E46] rounded-lg p-1 border border-[#00ADB5]/20">
                             <button type="button" onclick="toggleView('grid')"
                                 class="view-toggle px-4 py-2 rounded-lg view-toggle-active" id="gridViewBtn">
-
-                                <span class="text-sm text-[#EEEEEE]/70">View:</span>
-                                <div class="flex bg-[#393E46] rounded-lg p-1">
-                                    <button type="button" onclick="toggleView('grid')"
-                                        class="view-toggle px-4 py-2 rounded-lg view-toggle-active" id="gridViewBtn">
-
-                                        Grid
-                                    </button>
-                                    <button type="button" onclick="toggleView('list')"
-                                        class="view-toggle px-4 py-2 rounded-lg" id="listViewBtn">
-                                        List
-                                    </button>
-                                </div>
+                                Grid
+                            </button>
+                            <button type="button" onclick="toggleView('list')"
+                                class="view-toggle px-4 py-2 rounded-lg" id="listViewBtn">
+                                List
+                            </button>
                         </div>
-                        <button type="submit"
-                            class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
-                            Apply Filters
-                        </button>
                     </div>
+                    <button type="submit"
+                        class="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#EEEEEE] px-6 py-3 rounded-lg transition-colors">
+                        Apply Filters
+                    </button>
+                </div>
             </form>
         </section>
 
@@ -341,9 +344,15 @@
                             Purchase Project
                         </button>
 
+                        <!-- Bookmark button with hollow/filled toggle -->
                         <button
                             onclick="saveProject(<?php echo json_encode($row['id']); ?>, <?php echo json_encode($user_id); ?>);"
-                            class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 px-4 rounded-lg">Save</button>
+                            class="p-3 rounded-full hover:bg-[#00ADB5]/10 transition-all duration-300 bookmark-btn"
+                            title="Save Project">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00ADB5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                            </svg>
+                        </button>
 
 
 
@@ -463,8 +472,8 @@
             return;
         }
 
-        console.log("Project ID:", projectId, "User ID:", userId);
-
+        const button = event.currentTarget;
+        
         fetch('find_project.php', {
                 method: 'POST',
                 headers: {
@@ -485,7 +494,9 @@
             .then(data => {
                 console.log('Response Data:', data);
                 if (data.status === 'success') {
-                    alert(data.message);
+                    // Toggle the saved state visually
+                    button.classList.toggle('saved');
+                    showNotification(data.message);
                 } else {
                     alert(`Error: ${data.message}`);
                 }
