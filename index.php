@@ -47,8 +47,65 @@
 
     /* Navigation Bar */
     nav {
-        background-color: rgba(34, 40, 49, 0.9);
-        border-bottom: 2px solid var(--accent-color);
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        background: rgba(34, 40, 49, 0.4);
+        backdrop-filter: blur(12px);
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    nav .container {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0.75rem 2rem;
+    }
+
+    nav a:not(.btn-primary) {
+        position: relative;
+        transition: all 0.3s ease;
+        color: var(--text-primary);
+        opacity: 0.85;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+    }
+
+    nav a:not(.btn-primary):hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav .btn-primary {
+        background: var(--accent-color);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: all 0.3s ease;
+    }
+
+    nav .btn-primary:hover {
+        background: var(--button-hover-bg);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(0, 173, 181, 0.5);
+    }
+
+    @media (max-width: 768px) {
+        nav {
+            top: 0.5rem;
+            left: 0.5rem;
+            right: 0.5rem;
+        }
+        
+        nav .container {
+            padding: 0.5rem 1rem;
+        }
     }
 
     /* Hero Background */
@@ -123,8 +180,8 @@
 
 <body class="antialiased">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 left-0 right-0 shadow-md">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <nav class="z-50">
+        <div class="container">
             <div class="flex justify-between items-center">
                 <a href="index.php" class="flex items-center space-x-3">
                     <img src="./favicon.png" alt="P02" class="w-10 h-10 rounded-full">
