@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROJECT 02 - Empowering Students with Final Year Projects</title>
 
     <!-- Modern Fonts -->
@@ -102,7 +103,7 @@
             left: 0.5rem;
             right: 0.5rem;
         }
-        
+
         nav .container {
             padding: 0.5rem 1rem;
         }
@@ -187,7 +188,7 @@
                     <img src="./favicon.png" alt="P02" class="w-10 h-10 rounded-full">
                     <span class="text-2xl font-bold text-[var(--accent-color)]">PROJECT 02</span>
                 </a>
-                <div class="flex items-center space-x-3">
+                <div class="hidden md:flex items-center space-x-3">
                     <a href="login.php" class="text-[var(--accent-color)] text-sm font-medium px-3 py-1.5 rounded-full hover:bg-[var(--accent-color)]/10 transition-all duration-300">
                         Login
                     </a>
@@ -195,9 +196,30 @@
                         Get Started
                     </a>
                 </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-[var(--accent-color)] focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden">
+                <a href="login.php" class="block text-[var(--accent-color)] text-sm font-medium px-3 py-2 rounded-full hover:bg-[var(--accent-color)]/10 transition-all duration-300">
+                    Login
+                </a>
+                <a href="signup.php" class="block btn-primary mt-2">
+                    Get Started
+                </a>
             </div>
         </div>
     </nav>
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            var mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
 
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center hero-background">
@@ -219,7 +241,7 @@
     <section id="features" class="py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-16 text-[var(--accent-color)]">Revolutionizing Project Development</h2>
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature Card 1 -->
                 <div class="feature-card glass" data-aos="fade-up">
                     <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Smart Project Discovery</h3>
