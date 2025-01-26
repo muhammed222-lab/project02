@@ -19,7 +19,7 @@ function validateInput($input, $type = 'string') {
         case 'phone':
             return preg_match('/^[0-9\-\(\)\/\+\s]*$/', $input);
         default:
-            return strlen($input) >= 2 &amp;&amp; strlen($input) <= 255;
+            return strlen($input) >= 2 && strlen($input) <= 255;
     }
 }
 try {

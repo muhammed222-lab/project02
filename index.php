@@ -224,15 +224,18 @@
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center hero-background">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bold mb-4 hero-text">
-                Transform Your <span class="gradient-text">Final Year Project</span> Journey
-            </h1>
-            <p class="text-lg mb-8 hero-text">
-                Connect with expert creators, discover innovative projects, and bring your academic vision to life.
-            </p>
-            <div class="flex justify-center space-x-4">
-                <a href="signup.php" class="btn-primary">Start Your Journey</a>
-                <a href="#features" class="btn-primary">Explore Features</a>
+            <div class="flex flex-col items-center justify-center">
+             
+                <h1 class="text-5xl font-bold mb-4 hero-text">
+                    Transform Your <span class="gradient-text">Final Year Project</span> Journey
+                </h1>
+                <p class="text-lg mb-8 hero-text">
+                    Connect with expert creators, discover innovative projects, and bring your academic vision to life.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="signup.php" class="btn-primary">Start Your Journey</a>
+                    <a href="#features" class="btn-primary">Explore Features</a>
+                </div>
             </div>
         </div>
     </header>
@@ -243,24 +246,21 @@
             <h2 class="text-4xl font-bold text-center mb-16 text-[var(--accent-color)]">Revolutionizing Project Development</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature Card 1 -->
-                <div class="feature-card glass" data-aos="fade-up">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Smart Project Discovery</h3>
-                    <p class="text-center">Browse through our curated collection of innovative projects or create your own masterpiece.</p>
-                    <img src="./assets/images/search.png" alt="Browse" class="mx-auto">
+                <div class="feature-card glass flex flex-col items-center justify-between p-6" data-aos="fade-up">
+                    <img src="assets/images/Discovery.svg" alt="Smart Project Discovery" class="mx-auto mb-4 w-full h-full">
+                    <h3 class="text-xl font-semibold text-center text-[var(--accent-color)]">Smart Project Discovery</h3>
                 </div>
-
+                
                 <!-- Feature Card 2 -->
-                <div class="feature-card glass" data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Expert Collaboration</h3>
-                    <p class="text-center">Connect with experienced creators who understand your vision and can bring it to life.</p>
-                    <img src="./assets/images/connect.png" alt="Connect" class="mx-auto">
+                <div class="feature-card glass flex flex-col items-center justify-between p-6" data-aos="fade-up" data-aos-delay="100">
+                    <img src="assets/images/Collaboration.svg" alt="Expert Collaboration" class="mx-auto mb-4 w-full h-48">
+                    <h3 class="text-xl font-semibold text-center text-[var(--accent-color)]">Expert Collaboration</h3>
                 </div>
-
+                
                 <!-- Feature Card 3 -->
-                <div class="feature-card glass" data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-[var(--accent-color)]">Seamless Experience</h3>
-                    <p class="text-center">Secure transactions and instant project delivery for a worry-free experience.</p>
-                    <img src="./assets/images/control.png" alt="Control" class="mx-auto">
+                <div class="feature-card glass flex flex-col items-center justify-between p-6" data-aos="fade-up" data-aos-delay="200">
+                    <img src="assets/images/Experience.svg" alt="Seamless Experience" class="mx-auto mb-4 w-full h-48">
+                    <h3 class="text-xl font-semibold text-center text-[var(--accent-color)]">Seamless Experience</h3>
                 </div>
             </div>
         </div>
