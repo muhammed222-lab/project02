@@ -115,8 +115,8 @@
     <?php include 'navigation.php'; ?>
     <?php include 'hero.php'; ?>
     <?php include 'about.php'; ?>
-    <?php include 'service.php'; ?>
     <?php include 'features.php'; ?>
+    <?php include 'service.php'; ?>
     <?php include 'testimonials.php'; ?>
     <?php include 'footer.php'; ?>
 
